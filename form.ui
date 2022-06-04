@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Widget</class>
- <widget class="QWidget" name="Widget">
+ <class>centralwidget</class>
+ <widget class="QWidget" name="centralwidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -313,16 +313,6 @@
    </property>
    <property name="text">
     <string>TELE</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="table_telemetry">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>420</y>
-     <width>1061</width>
-     <height>192</height>
-    </rect>
    </property>
   </widget>
  </widget>
