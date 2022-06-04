@@ -8,7 +8,7 @@ class Communication:
     baudrate = ''
     portName = ''
     widget = ''
-    q = 1
+    q = False
 
     ser = serial.Serial()
 
@@ -22,9 +22,8 @@ class Communication:
         try:
             self.ser = serial.Serial(self.portName, self.baudrate)
             print("Connected : ", self.portName)
-            self.q = 0
+            self.q = True
             return True
-
 
         except serial.serialutil.SerialException:
             print("Can't open : ", self.portName)
@@ -36,35 +35,35 @@ class Communication:
         last = b'\x00'
         lastlast = b'\x00'
 
-        while self.q == 0:
-            byte = self.ser.read()
-            if byte == b'\xcd' and len(line) == 0:
-                1 == 1
+        while self.q:
+            try:
+                byte = self.ser.read()
+                if byte == b'\xcd' and len(line) == 0:
+                    1 == 1
 
-            elif byte == b'\xab' and last == b'\xcd' and len(line) == 0:
-                line.append(last)
-                line.append(byte)
+                elif byte == b'\xab' and last == b'\xcd' and len(line) == 0:
+                    line.append(last)
+                    line.append(byte)
 
-            elif byte and last == b'\xdc' and lastlast == b'\xba' and len(line) == 87:
-                line.append(byte)
-                row = self.widget.pckParser(line)
-                line = []
-                sleep(1)
+                elif byte and last == b'\xdc' and lastlast == b'\xba' and len(line) == 87:
+                    line.append(byte)
+                    self.widget.pckParser(line)
+                    line = []
+                    sleep(1)
 
-            elif byte and len(line) != 0:
-                line.append(byte)
+                elif byte and len(line) != 0:
+                    line.append(byte)
 
-            if len(line) >= 88:
-                line = []
+                if len(line) >= 88:
+                    line = []
 
-            lastlast = last
-            last = byte
+                lastlast = last
+                last = byte
 
+            except BaseException:
+                print("Serial exception, read at: ", self.portName)
 
-    def close(self):
-        if(self.ser.isOpen()):
-            self.q = 1
-            self.ser.close()
-        else:
-            print(self.portName, " it's already closed")
-
+    def disconnect(self):
+        self.ser.close()
+        print("Disconnected : ", self.portName)
+        self.q = False

@@ -6,7 +6,7 @@ import serial.tools.list_ports
 import threading
 from pathlib import Path
 
-from PySide2.QtWidgets import QApplication
+from PySide2.QtWidgets import QApplication, QTableWidgetItem
 from PySide2.QtCore import QFile
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt
@@ -14,8 +14,35 @@ from PySide2.QtUiTools import loadUiType
 
 from communication import Communication
 
+global com
+global first_connect
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 Form, Base = loadUiType(os.path.join(current_dir, "form.ui"))
+title = ["<TAKIM NO>",
+         "<PAKET NUMARASI>",
+         "<GONDERME SAATI>",
+         "<PAYLOAD BASINC>",
+         "<TASIYICI BASINC>",
+         "<PAYLOAD YUKSEKLIK>",
+         "<TASIYICI YUKSEKLIK>",
+         "<YUKSEKLIK FARKI>",
+         "<İNİŞ HIZI>",
+         "<SICAKLIK>",
+         "<PIL GERILIMI>",
+         "<PAYLOAD GPS LATITUDE>",
+         "<PAYLOAD GPS LONGITUDE>",
+         "<PAYLOAD GPS ALTITUDE>",
+         "<TASIYICI GPS LATITUDE>",
+         "<TASIYICI GPS LONGITUDE>",
+         "<TASIYICI GPS ALTITUDE>",
+         "<UYDU STATÜSÜ>",
+         "<YAW>",
+         "<ROLL>",
+         "<PITCH>",
+         "<DÖNÜŞ SAYISI>",
+         "<VİDEO AKTARIM BİLGİSİ>",
+         "<HAVA DURUMU>"]
 
 
 class Widget(Base, Form):
@@ -24,8 +51,13 @@ class Widget(Base, Form):
         super(self.__class__, self).__init__(parent)
         self.setupUi(self)
         self.image = None
-        self.setWindowIcon(QIcon("logo.ico"))
+        self.setWindowIcon(QIcon("images/logo.ico"))
         self.setWindowTitle("TULPAR Model Uydu Takımı")
+
+        # self.setMinimumSize(1083, 621)
+        # self.setMaximumSize(1083, 621)
+        # self.setFixedSize(1083, 621)
+        self.setWindowOpacity(0.95)
 
         dark_palette = QPalette()
         dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
@@ -48,11 +80,7 @@ class Widget(Base, Form):
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
 
-        self.setMinimumSize(1083, 621)
-        self.setMaximumSize(1083, 621)
-        self.setWindowOpacity(0.95)
-
-        self.logo.setStyleSheet("background: url(logo.jpg)")
+        self.logo.setStyleSheet("background: url(images/logo.jpg)")
 
         ports = serial.tools.list_ports.comports()
         for element in ports:
@@ -66,9 +94,18 @@ class Widget(Base, Form):
         self.baud_combobox.addItem("38400".split()[0])
         self.baud_combobox.addItem("57600".split()[0])
         self.baud_combobox.addItem("115200".split()[0])
-        self.button_connect.setStyleSheet("background-color: green")
+        self.button_refresh.setIcon(QIcon("images/refresh.png"))
+        self.button_refresh.clicked.connect(self.refreshPorts)
 
-        self.button_connect.clicked.connect(self.connect)
+        self.button_connection.setStyleSheet("background-color: green")
+        self.button_connection.clicked.connect(self.connection)
+
+        self.table_telemetry.setStyleSheet("background-color: white")
+        self.table_telemetry.setHorizontalHeaderLabels(title)
+        self.table_telemetry.horizontalHeader().setVisible(True)
+
+        global first_connect
+        first_connect = True
 
     def load_ui(self):
         loader = QUiLoader()
@@ -78,18 +115,52 @@ class Widget(Base, Form):
         loader.load(ui_file, self)
         ui_file.close()
 
-    def connect(self):
+    def refreshPorts(self):
+        self.ports_combobox.clear()
+        ports = serial.tools.list_ports.comports()
+        for element in ports:
+            self.ports_combobox.addItem(str(element).split()[0])
+
+    def addRow(self, list):
+
+        numRows = self.table_telemetry.rowCount() - 1
+        self.table_telemetry.insertRow(numRows)
+        for i in range(0, 23):
+            self.table_telemetry.setItem(numRows, i, QTableWidgetItem(str(list[i])))
+        self.table_telemetry.scrollToBottom()
+
+    def connection(self):
 
         global com
+        global first_connect
 
-        port = self.ports_combobox.currentText()
-        baud = self.baud_combobox.currentText()
-        com = Communication(port, baud, self)
-        isConnected = com.connect()
+        if first_connect:
+            port = self.ports_combobox.currentText()
+            baud = self.baud_combobox.currentText()
+            com = Communication(port, baud, self)
+            if com.connect():
+                first_connect = False
+                self.button_connection.setStyleSheet("background-color: red")
+                self.button_connection.setText("KES")
+                t1 = threading.Thread(target=com.getData)
+                t1.start()
 
-        if isConnected:
-            t1 = threading.Thread(target=com.getData)
-            t1.start()
+        else:
+            isConnected = com.q
+            if not isConnected:
+                port = self.ports_combobox.currentText()
+                baud = self.baud_combobox.currentText()
+                com = Communication(port, baud, self)
+                if com.connect():
+                    self.button_connection.setStyleSheet("background-color: red")
+                    self.button_connection.setText("KES")
+                    t1 = threading.Thread(target=com.getData)
+                    t1.start()
+
+            else:
+                com.disconnect()
+                self.button_connection.setStyleSheet("background-color: green")
+                self.button_connection.setText("BAĞLAN")
 
     def pckParser(self, line):
         # header = line[0] + line[1]
@@ -191,6 +262,7 @@ class Widget(Base, Form):
         row.append(video_status)
         row.append(weather_forecast)
         print(row)
+        self.addRow(row)
 
 
 if __name__ == "__main__":
