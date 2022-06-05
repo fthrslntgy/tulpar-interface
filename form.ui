@@ -38,7 +38,7 @@
     <enum>Qt::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QComboBox" name="ports_combobox">
+  <widget class="QComboBox" name="combobox_ports">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -48,7 +48,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QComboBox" name="baud_combobox">
+  <widget class="QComboBox" name="combobox_bauds">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -188,7 +188,7 @@
     <string>MOTOR STOP</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="command_combobox">
+  <widget class="QComboBox" name="combobox_command">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -313,6 +313,16 @@
    </property>
    <property name="text">
     <string>TELE</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="graph_widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>130</y>
+     <width>241</width>
+     <height>151</height>
+    </rect>
    </property>
   </widget>
  </widget>

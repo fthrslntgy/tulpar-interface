@@ -58,16 +58,16 @@ class Widget(Base, Form):
         # Port and baud components
         ports = serial.tools.list_ports.comports()
         for element in ports:
-            self.ports_combobox.addItem(str(element).split()[0])
-        self.baud_combobox.addItem("2400".split()[0])
-        self.baud_combobox.addItem("4800".split()[0])
-        self.baud_combobox.addItem("9600".split()[0])
-        self.baud_combobox.addItem("14400".split()[0])
-        self.baud_combobox.addItem("19200".split()[0])
-        self.baud_combobox.addItem("28800".split()[0])
-        self.baud_combobox.addItem("38400".split()[0])
-        self.baud_combobox.addItem("57600".split()[0])
-        self.baud_combobox.addItem("115200".split()[0])
+            self.combobox_ports.addItem(str(element).split()[0])
+        self.combobox_bauds.addItem("2400".split()[0])
+        self.combobox_bauds.addItem("4800".split()[0])
+        self.combobox_bauds.addItem("9600".split()[0])
+        self.combobox_bauds.addItem("14400".split()[0])
+        self.combobox_bauds.addItem("19200".split()[0])
+        self.combobox_bauds.addItem("28800".split()[0])
+        self.combobox_bauds.addItem("38400".split()[0])
+        self.combobox_bauds.addItem("57600".split()[0])
+        self.combobox_bauds.addItem("115200".split()[0])
         self.button_refresh.setIcon(QIcon("images/refresh.png"))
         self.button_refresh.clicked.connect(self.refreshPorts)
 
@@ -111,10 +111,10 @@ class Widget(Base, Form):
 
     def refreshPorts(self):
 
-        self.ports_combobox.clear()
+        self.combobox_ports.clear()
         ports = serial.tools.list_ports.comports()
         for element in ports:
-            self.ports_combobox.addItem(str(element).split()[0])
+            self.combobox_ports.addItem(str(element).split()[0])
 
     def addRow(self, list):
 
@@ -141,8 +141,8 @@ class Widget(Base, Form):
             return
 
         elif first_connect:
-            port = self.ports_combobox.currentText()
-            baud = self.baud_combobox.currentText()
+            port = self.combobox_ports.currentText()
+            baud = self.combobox_bauds.currentText()
             com = Communication(port, baud, self)
             if com.connect():
                 first_connect = False
@@ -155,8 +155,8 @@ class Widget(Base, Form):
         else:
             isConnected = com.q
             if not isConnected:
-                port = self.ports_combobox.currentText()
-                baud = self.baud_combobox.currentText()
+                port = self.combobox_ports.currentText()
+                baud = self.combobox_bauds.currentText()
                 com = Communication(port, baud, self)
                 if com.connect():
                     connected = True
