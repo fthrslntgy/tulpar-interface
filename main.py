@@ -3,12 +3,16 @@ import os
 import serial.tools.list_ports
 import threading
 from pathlib import Path
+import random
 
 from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt
 from PySide2.QtUiTools import loadUiType
+
+import pyqtgraph as pg
+import numpy as np
 
 from communication import Communication
 from telemetry_table import TelemetryTable
@@ -81,6 +85,39 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(10, 420, 1061, 192))
 
+        global altitude_plot, altitude_data,  ptr1
+        view = pg.GraphicsView(self.graph_1)
+        Layout = pg.GraphicsLayout()
+        view.setCentralItem(Layout)
+        view.resize(361, 241)
+        p1 = Layout.addPlot(title="Altitude (m)")
+        p1.addLegend()
+        altitude_plot = p1.plot(pen=(29, 185, 84), name="altit")
+        altitude_data = np.linspace(0, 0, 30)
+        ptr1 = 0
+
+        self.update_altitude()
+
+        # Acceleration graph
+        global accX_plot, accY_plot, accZ_plot, accX_data, accY_data, accZ_data, ptr2
+        view2 = pg.GraphicsView(self.graph_2)
+        Layout2 = pg.GraphicsLayout()
+        view2.setCentralItem(Layout2)
+        view2.resize(361, 241)
+        acc_graph = Layout2.addPlot(title="Accelerations (m/s²)")
+        # adding legend
+        acc_graph.addLegend()
+        acc_graph.hideAxis('bottom')
+        accX_plot = acc_graph.plot(pen=(102, 252, 241), name="X")
+        accY_plot = acc_graph.plot(pen=(29, 185, 84), name="Y")
+        accZ_plot = acc_graph.plot(pen=(203, 45, 111), name="Z")
+
+        accX_data = np.linspace(0, 0)
+        accY_data = np.linspace(0, 0)
+        accZ_data = np.linspace(0, 0)
+        ptr2 = 0
+        self.update_acc()
+
         global com
         global first_connect
         global connected
@@ -88,6 +125,37 @@ class Widget(Base, Form):
         first_connect = True
         connected = False
         quit = False
+
+    def update_altitude(self):
+        global altitude_plot, altitude_data,  ptr1
+        value_chain = [0] + random.sample(range(0, 300), 1) + \
+            [random.getrandbits(1)] + random.sample(range(0, 20), 8)
+        altitude_data[:-1] = altitude_data[1:]
+        altitude_data[-1] = float(value_chain[1])
+        ptr1 += 1
+        altitude_plot.setData(altitude_data)
+        altitude_plot.setPos(ptr1, 0)
+
+    def update_acc(self):
+        global accX_plot, accY_plot, accZ_plot, accX_data, accY_data, accZ_data, ptr2
+        value_chain = [0] + random.sample(range(0, 300), 1) + \
+            [random.getrandbits(1)] + random.sample(range(0, 20), 8)
+        accX_data[:-1] = accX_data[1:]
+        accY_data[:-1] = accY_data[1:]
+        accZ_data[:-1] = accZ_data[1:]
+
+        accX_data[-1] = float(value_chain[8])
+        accY_data[-1] = float(value_chain[9])
+        accZ_data[-1] = float(value_chain[10])
+        ptr2 += 1
+
+        accX_plot.setData(accX_data)
+        accY_plot.setData(accY_data)
+        accZ_plot.setData(accZ_data)
+
+        accX_plot.setPos(ptr2, 0)
+        accY_plot.setPos(ptr2, 0)
+        accZ_plot.setPos(ptr2, 0)
 
     def load_ui(self):
         loader = QUiLoader()

@@ -315,13 +315,23 @@
     <string>TELE</string>
    </property>
   </widget>
-  <widget class="QWidget" name="graph_widget" native="true">
+  <widget class="QGraphicsView" name="graph_1">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>130</y>
-     <width>241</width>
-     <height>151</height>
+     <x>10</x>
+     <y>110</y>
+     <width>361</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_2">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>110</y>
+     <width>361</width>
+     <height>241</height>
     </rect>
    </property>
   </widget>
