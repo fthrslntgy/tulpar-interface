@@ -6,17 +6,13 @@ import struct
 
 class Communication:
 
-    baudrate = ''
-    portName = ''
-    widget = ''
-    q = False
-
-    ser = serial.Serial()
-
     def __init__(self, port, baud, widget):
+
         self.baudrate = baud
         self.portName = port
         self.widget = widget
+        self.q = False
+        self.ser = serial.Serial()
 
     def connect(self):
 
@@ -68,10 +64,12 @@ class Communication:
                 lastlast = last
                 last = byte
 
-            except BaseException:
+            except BaseException as be:
                 print("Serial exception, read at: ", self.portName)
+                print("Exception: ", be)
 
     def pckParser(self, line):
+
         # header = line[0] + line[1]
         length = line[2]
         length = int.from_bytes(length, "little", signed=False)
@@ -158,11 +156,11 @@ class Communication:
         row.append(float("{:.2f}".format(tempe)))
         row.append(float("{:.2f}".format(b_voltage)))
         row.append(float("{:.2f}".format(latitude_pl)))
+        row.append(float("{:.2f}".format(longitude_pl)))
         row.append(float("{:.2f}".format(altitude_pl)))
-        row.append(float("{:.2f}".format(latitude_pl)))
         row.append(float("{:.2f}".format(latitude_car)))
+        row.append(float("{:.2f}".format(longitude_car)))
         row.append(float("{:.2f}".format(altitude_car)))
-        row.append(float("{:.2f}".format(latitude_car)))
         row.append(status)
         row.append(float("{:.2f}".format(yaw)))
         row.append(float("{:.2f}".format(roll)))
@@ -170,5 +168,8 @@ class Communication:
         row.append(return_number)
         row.append(video_status)
         row.append(weather_forecast)
+
         print(row)
         self.widget.addRow(row)
+        self.widget.graphs.update_pl(latitude_pl, longitude_pl, altitude_pl)
+        self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)

@@ -315,7 +315,7 @@
     <string>TELE</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_1">
+  <widget class="QGraphicsView" name="graph_pl">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -325,7 +325,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_2">
+  <widget class="QGraphicsView" name="graph_car">
    <property name="geometry">
     <rect>
      <x>380</x>
