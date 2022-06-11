@@ -1,42 +1,19 @@
 from PySide2.QtWidgets import QAbstractItemView, QTableWidget
 from PySide2.QtGui import QFont
-
+import constants as cns
 
 class TelemetryTable(QTableWidget):
 
-    title = ("<TAKIM NO>",
-             "<PAKET NUMARASI>",
-             "<GONDERME SAATI>",
-             "<PAYLOAD BASINC>",
-             "<TASIYICI BASINC>",
-             "<PAYLOAD YUKSEKLIK>",
-             "<TASIYICI YUKSEKLIK>",
-             "<YUKSEKLIK FARKI>",
-             "<İNİŞ HIZI>",
-             "<SICAKLIK>",
-             "<PIL GERILIMI>",
-             "<PAYLOAD GPS LATITUDE>",
-             "<PAYLOAD GPS LONGITUDE>",
-             "<PAYLOAD GPS ALTITUDE>",
-             "<TASIYICI GPS LATITUDE>",
-             "<TASIYICI GPS LONGITUDE>",
-             "<TASIYICI GPS ALTITUDE>",
-             "<UYDU STATÜSÜ>",
-             "<YAW>",
-             "<ROLL>",
-             "<PITCH>",
-             "<DÖNÜŞ SAYISI>",
-             "<VİDEO AKTARIM BİLGİSİ>",
-             "<HAVA DURUMU>")
+    title = cns.TABLE_TITLE
 
     def __init__(self, parent=None):
-        super(TelemetryTable, self).__init__(1, 24, parent)
-        self.setFont(QFont("Times New Roman", 11, QFont.Normal, italic=False))
+        super(TelemetryTable, self).__init__(1, cns.NUM_OF_VARS, parent)
+        self.setFont(QFont(cns.TABLE_FONT, cns.TABLE_FONT_SIZE, QFont.Normal, italic=False))
         style = "::section {""background-color: white; font-size: 8pt; }"
         self.horizontalHeader().setStyleSheet(style)
         self.setHorizontalHeaderLabels(self.title)
         self.verticalHeader().hide()
 
         self.setSelectionMode(QAbstractItemView.NoSelection)
-        for i in range(0, 24):
-            self.setColumnWidth(i, 150)
+        for i in range(0, cns.NUM_OF_VARS):
+            self.setColumnWidth(i, cns.TABLE_COLUMN_WIDTH)

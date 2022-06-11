@@ -13,9 +13,10 @@ from PySide2.QtUiTools import loadUiType
 from communication import Communication
 from telemetry_table import TelemetryTable
 from graphs import Graphs
+import constants as cns
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-Form, Base = loadUiType(os.path.join(current_dir, "form.ui"))
+Form, Base = loadUiType(os.path.join(current_dir, cns.UI_FILE))
 
 
 class Widget(Base, Form):
@@ -27,9 +28,9 @@ class Widget(Base, Form):
         # Main window options
         self.image = None
         self.setWindowIcon(QIcon("images/logo.ico"))
-        self.setWindowTitle("TULPAR Model Uydu Takımı")
-        self.setFixedSize(1083, 621)
-        self.setWindowOpacity(0.95)
+        self.setWindowTitle(cns.MAIN_TITLE)
+        self.setFixedSize(cns.MAIN_WIDTH, cns.MAIN_HEIGHT)
+        self.setWindowOpacity(cns.MAIN_OPACITY)
 
         # Palette options
         dark_palette = QPalette()
@@ -60,15 +61,8 @@ class Widget(Base, Form):
         ports = serial.tools.list_ports.comports()
         for element in ports:
             self.combobox_ports.addItem(str(element).split()[0])
-        self.combobox_bauds.addItem("2400".split()[0])
-        self.combobox_bauds.addItem("4800".split()[0])
-        self.combobox_bauds.addItem("9600".split()[0])
-        self.combobox_bauds.addItem("14400".split()[0])
-        self.combobox_bauds.addItem("19200".split()[0])
-        self.combobox_bauds.addItem("28800".split()[0])
-        self.combobox_bauds.addItem("38400".split()[0])
-        self.combobox_bauds.addItem("57600".split()[0])
-        self.combobox_bauds.addItem("115200".split()[0])
+        for element in cns.MAIN_BAUDS:
+            self.combobox_bauds.addItem(element)
         self.button_refresh.setIcon(QIcon("images/refresh.png"))
         self.button_refresh.clicked.connect(self.refreshPorts)
 
@@ -80,7 +74,7 @@ class Widget(Base, Form):
         self.table_telemetry = TelemetryTable(self)
         self.table_telemetry.setStyleSheet("background-color: white")
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.table_telemetry.setGeometry(QRect(10, 420, 1061, 192))
+        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
         # Graph components
         self.graphs = Graphs(self)
@@ -93,7 +87,7 @@ class Widget(Base, Form):
 
     def load_ui(self):
         loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / "form.ui")
+        path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
         ui_file = QFile(path)
         ui_file.open(QFile.ReadOnly)
         loader.load(ui_file, self)
@@ -102,7 +96,7 @@ class Widget(Base, Form):
     def closeEvent(self, event):
 
         global quit
-        close = QMessageBox.question(self, "EXIT", "Cikmak istediginizden emin misiniz?", QMessageBox.Yes | QMessageBox.No)
+        close = QMessageBox.question(self, cns.MAIN_EXIT_TITLE, cns.MAIN_EXIT_MESSAGE, QMessageBox.Yes | QMessageBox.No)
         if close == QMessageBox.Yes:
             quit = True
             event.accept()
@@ -150,7 +144,7 @@ class Widget(Base, Form):
                 first_connect = False
                 connected = True
                 self.button_connection.setStyleSheet("background-color: red")
-                self.button_connection.setText("KES")
+                self.button_connection.setText(cns.MAIN_DISCONNECT)
                 t1 = threading.Thread(target=com.getData)
                 t1.start()
 
@@ -163,7 +157,7 @@ class Widget(Base, Form):
                 if com.connect():
                     connected = True
                     self.button_connection.setStyleSheet("background-color: red")
-                    self.button_connection.setText("KES")
+                    self.button_connection.setText(cns.MAIN_DISCONNECT)
                     t1 = threading.Thread(target=com.getData)
                     t1.start()
 
@@ -171,7 +165,7 @@ class Widget(Base, Form):
                 com.disconnect()
                 connected = False
                 self.button_connection.setStyleSheet("background-color: green")
-                self.button_connection.setText("BAĞLAN")
+                self.button_connection.setText(cns.MAIN_CONNECT)
 
 
 def main():

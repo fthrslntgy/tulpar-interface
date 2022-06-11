@@ -2,6 +2,7 @@ import serial
 import serial.tools.list_ports
 from time import sleep
 import struct
+import constants as cns
 
 
 class Communication:
@@ -43,22 +44,22 @@ class Communication:
             try:
                 byte = self.ser.read()
                 if byte == b'\xcd' and len(line) == 0:
-                    1 == 1
+                    1 == 1 # :)
 
                 elif byte == b'\xab' and last == b'\xcd' and len(line) == 0:
                     line.append(last)
                     line.append(byte)
 
-                elif byte and last == b'\xdc' and lastlast == b'\xba' and len(line) == 87:
+                elif byte and last == b'\xdc' and lastlast == b'\xba' and len(line) == cns.TELEMETRY_LEN-1:
                     line.append(byte)
                     self.pckParser(line)
                     line = []
-                    sleep(1)
+                    sleep(cns.TELEMETRY_PERIOD)
 
                 elif byte and len(line) != 0:
                     line.append(byte)
 
-                if len(line) >= 88:
+                if len(line) >= cns.TELEMETRY_LEN:
                     line = []
 
                 lastlast = last
