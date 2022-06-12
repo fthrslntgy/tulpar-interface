@@ -211,7 +211,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="label_status">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -263,7 +263,7 @@
     <enum>Qt::Vertical</enum>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="label_run_value">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -302,7 +302,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_connect_2">
+  <widget class="QPushButton" name="button_connect_tele">
    <property name="geometry">
     <rect>
      <x>80</x>
@@ -348,7 +348,7 @@
     <enum>Qt::Vertical</enum>
    </property>
   </widget>
-  <widget class="QTableView" name="tableView">
+  <widget class="QTableView" name="table_disabled">
    <property name="enabled">
     <bool>false</bool>
    </property>
