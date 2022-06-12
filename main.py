@@ -86,6 +86,7 @@ class Widget(Base, Form):
         quit = False
 
     def load_ui(self):
+        
         loader = QUiLoader()
         path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
         ui_file = QFile(path)
@@ -125,10 +126,7 @@ class Widget(Base, Form):
 
     def connection(self):
 
-        global com
-        global first_connect
-        global connected
-        global quit
+        global com, first_connect, connected, quit
 
         if quit and connected:
             com.disconnect()
@@ -169,6 +167,7 @@ class Widget(Base, Form):
 
 
 def main():
+
     app = QApplication([])
     widget = Widget()
     widget.show()
@@ -176,4 +175,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
