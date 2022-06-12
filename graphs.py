@@ -2,6 +2,7 @@ import pyqtgraph as pg
 import numpy as np
 import constants as cns
 
+
 class Graphs:
 
     def __init__(self, widget):
@@ -42,7 +43,6 @@ class Graphs:
 
     def update_pl(self, lat, lon, alt):
 
-        print(self.pl_lat_data)
         self.pl_lat_data[:-1] = self.pl_lat_data[1:]
         self.pl_lon_data[:-1] = self.pl_lon_data[1:]
         self.pl_alt_data[:-1] = self.pl_alt_data[1:]

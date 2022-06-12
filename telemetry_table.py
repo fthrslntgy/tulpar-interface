@@ -2,6 +2,7 @@ from PySide2.QtWidgets import QAbstractItemView, QTableWidget
 from PySide2.QtGui import QFont
 import constants as cns
 
+
 class TelemetryTable(QTableWidget):
 
     title = cns.TABLE_TITLE

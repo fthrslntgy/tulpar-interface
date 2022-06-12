@@ -86,7 +86,7 @@ class Widget(Base, Form):
         quit = False
 
     def load_ui(self):
-        
+
         loader = QUiLoader()
         path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
         ui_file = QFile(path)

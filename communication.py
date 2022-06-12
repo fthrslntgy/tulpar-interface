@@ -44,13 +44,13 @@ class Communication:
             try:
                 byte = self.ser.read()
                 if byte == b'\xcd' and len(line) == 0:
-                    1 == 1 # :)
+                    1 == 1
 
                 elif byte == cns.HEADER_BYTE_1 and last == cns.HEADER_BYTE_2 and len(line) == 0:
                     line.append(last)
                     line.append(byte)
 
-                elif byte and last == cns.FINISH_BYTE_2 and lastlast == cns.FINISH_BYTE_1 and len(line) == cns.TELEMETRY_LEN-1:
+                elif byte and last == cns.FINISH_BYTE_1 and lastlast == cns.FINISH_BYTE_2 and len(line) == cns.TELEMETRY_LEN-1:
                     line.append(byte)
                     self.pckParser(line)
                     line = []
