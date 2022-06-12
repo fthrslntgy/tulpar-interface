@@ -2,6 +2,8 @@
 import os
 import serial.tools.list_ports
 import threading
+import csv
+from time import strftime
 from pathlib import Path
 
 from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox
@@ -17,6 +19,10 @@ import constants as cns
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 Form, Base = loadUiType(os.path.join(current_dir, cns.UI_FILE))
+
+output_dir = os.path.join(current_dir, r'output_files')
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 
 class Widget(Base, Form):
@@ -139,6 +145,11 @@ class Widget(Base, Form):
             baud = self.combobox_bauds.currentText()
             com = Communication(port, baud, self)
             if com.connect():
+                self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
+                os.makedirs(self.session_directory)
+                with open(self.session_directory + "/Telemetry.csv", 'w', newline='') as file:
+                    writer = csv.writer(file, delimiter=',')
+                    writer.writerow(cns.TABLE_TITLE)
                 first_connect = False
                 connected = True
                 self.button_connection.setStyleSheet("background-color: red")
@@ -153,6 +164,11 @@ class Widget(Base, Form):
                 baud = self.combobox_bauds.currentText()
                 com = Communication(port, baud, self)
                 if com.connect():
+                    self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
+                    os.makedirs(self.session_directory)
+                    with open(self.session_directory + "/Telemetry.csv", 'w', newline='') as file:
+                        writer = csv.writer(file, delimiter=',')
+                        writer.writerow(cns.TABLE_TITLE)
                     connected = True
                     self.button_connection.setStyleSheet("background-color: red")
                     self.button_connection.setText(cns.MAIN_DISCONNECT)

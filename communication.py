@@ -3,6 +3,7 @@ import serial.tools.list_ports
 from time import sleep
 import struct
 import constants as cns
+import csv
 
 
 class Communication:
@@ -171,6 +172,9 @@ class Communication:
         row.append(weather_forecast)
 
         print(row)
+        with open(self.widget.session_directory + "/Telemetry.csv", 'a', newline='') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow(row)
         self.widget.addRow(row)
         self.widget.graphs.update_pl(latitude_pl, longitude_pl, altitude_pl)
         self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)

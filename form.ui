@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1083</width>
-    <height>621</height>
+    <width>1286</width>
+    <height>859</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -30,7 +30,7 @@
     <rect>
      <x>0</x>
      <y>90</y>
-     <width>1081</width>
+     <width>1281</width>
      <height>20</height>
     </rect>
    </property>
@@ -89,7 +89,7 @@
     <rect>
      <x>0</x>
      <y>-10</y>
-     <width>1081</width>
+     <width>1281</width>
      <height>20</height>
     </rect>
    </property>
@@ -100,9 +100,9 @@
   <widget class="Line" name="line_4">
    <property name="geometry">
     <rect>
-     <x>-20</x>
-     <y>610</y>
-     <width>1101</width>
+     <x>-10</x>
+     <y>840</y>
+     <width>1291</width>
      <height>20</height>
     </rect>
    </property>
@@ -116,7 +116,7 @@
      <x>-10</x>
      <y>0</y>
      <width>20</width>
-     <height>621</height>
+     <height>851</height>
     </rect>
    </property>
    <property name="orientation">
@@ -126,10 +126,10 @@
   <widget class="Line" name="line_6">
    <property name="geometry">
     <rect>
-     <x>1070</x>
+     <x>1270</x>
      <y>0</y>
      <width>20</width>
-     <height>621</height>
+     <height>851</height>
     </rect>
    </property>
    <property name="orientation">
@@ -201,7 +201,7 @@
   <widget class="QLabel" name="logo">
    <property name="geometry">
     <rect>
-     <x>920</x>
+     <x>1120</x>
      <y>10</y>
      <width>151</width>
      <height>81</height>
@@ -318,20 +318,46 @@
   <widget class="QGraphicsView" name="graph_pl">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>540</x>
      <y>110</y>
      <width>361</width>
-     <height>241</height>
+     <height>261</height>
     </rect>
    </property>
   </widget>
   <widget class="QGraphicsView" name="graph_car">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>910</x>
      <y>110</y>
      <width>361</width>
-     <height>241</height>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="Line" name="line_9">
+   <property name="geometry">
+    <rect>
+     <x>1100</x>
+     <y>0</y>
+     <width>20</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QTableView" name="tableView">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>650</y>
+     <width>1261</width>
+     <height>192</height>
     </rect>
    </property>
   </widget>
