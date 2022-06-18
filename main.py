@@ -6,7 +6,7 @@ import csv
 from time import strftime
 from pathlib import Path
 
-from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox
+from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox, QFileDialog
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt
@@ -82,14 +82,26 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
-        # Statuscomponents
+        # Status components
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
         self.button_sendcommand.clicked.connect(self.send_telecommand)
 
         self.label_status.setAlignment(Qt.AlignCenter)
-        self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
+        self.label_status.setStyleSheet("background-color: red; font-size: 10pt; font-weight: bold;")
         self.label_status.setText("UNCONNECTED")
+
+        # Video send components
+        self.button_select_video.clicked.connect(self.uploadVideo)
+
+        # Gyro and height_diff compontents
+        self.label_gyro.setAlignment(Qt.AlignCenter)
+        self.label_gyro.setStyleSheet("background-color: darkred; font-size: 8pt; font-weight: bold; color: white")
+        self.label_height_diff.setAlignment(Qt.AlignCenter)
+        self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
+        self.label_video_status.setAlignment(Qt.AlignCenter)
+        self.label_video_status.setStyleSheet("background-color: black; font-size: 8pt; font-weight: bold; color: white")
+        self.label_video_status.setText("Aktarım Durumu: -")
 
         # Graph components
         self.graphs = Graphs(self)
@@ -99,6 +111,12 @@ class Widget(Base, Form):
         first_connect = True
         connected = False
         quit = False
+
+    def uploadVideo(self):
+
+        fileName, _ = QFileDialog.getOpenFileName(self, "Choose a file", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
+        if fileName != '':
+            self.lineedit_select_video.setText(fileName)
 
     def send_telecommand(self):
 
@@ -178,6 +196,23 @@ class Widget(Base, Form):
     def setStatus(self, stat):
 
         self.label_status.setText(cns.SAT_STATUS_VARS[stat])
+
+    def setPRY(self, pitch, roll, yaw):
+
+        text = "PITCH: " + str(pitch) + " ROLL: " + str(roll) + " YAW: " + str(yaw)
+        self.label_gyro.setText(text)
+
+    def setHeightDiff(self, height_diff):
+
+        text = "Yükseklik Farkı: " + str(height_diff)
+        self.label_height_diff.setText(text)
+
+    def setVideoStatus(self, status):
+
+        if status == 0:
+            self.label_video_status.setText("Aktarım Durumu: Evet")
+        else:
+            self.label_video_status.setText("Aktarım Durumu: Hayır")
 
     def connection(self):
 

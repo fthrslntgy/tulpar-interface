@@ -185,4 +185,6 @@ class Communication:
         self.widget.graphs.update_sp_tmp_v(speed, tempe, b_voltage)
         # update status, pitch-roll-yaw, height diff and video status
         self.widget.setStatus(status)
-        #self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
+        self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
+        self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
+        self.widget.setVideoStatus(status)
