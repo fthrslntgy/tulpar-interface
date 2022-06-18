@@ -82,6 +82,21 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
+
+        self.combobox_command.addItem("1. Beklemede")
+        self.combobox_command.addItem("2. Yükselme")
+        self.combobox_command.addItem("3. Model uydu iniş ")
+        self.combobox_command.addItem("4. Ayrılma")
+        self.combobox_command.addItem("5. Görev yükü iniş 6")
+        self.combobox_command.addItem("6. Askıda kalma")
+        self.combobox_command.addItem("7. Görev yükü iniş 4")
+        self.combobox_command.addItem("8. Kurtarma")
+        self.combobox_command.addItem("9. Manuel servo açma")
+        self.combobox_command.addItem("10. Manuel servo kapama")
+        self.combobox_command.addItem("11. Manuel motor tahrik")
+        self.combobox_command.addItem("12. Manuel motor stop")
+        self.button_sendcommand.clicked.connect(self.send_telecommand)
+
         # Graph components
         self.graphs = Graphs(self)
 
@@ -90,6 +105,42 @@ class Widget(Base, Form):
         first_connect = True
         connected = False
         quit = False
+
+    def send_telecommand(self):
+
+        ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=10)
+        telecommand = self.combobox_command.currentText()
+        index = telecommand.index(".")
+        selected = int(telecommand[0:index])
+
+        if selected == 1:
+            ser.write(b'\x00')
+        elif selected == 2:
+            ser.write(b'\x01')
+        elif selected == 3:
+            ser.write(b'\x02')
+        elif selected == 4:
+            ser.write(b'\x03')
+        elif selected == 5:
+            ser.write(b'\x04')
+        elif selected == 6:
+            ser.write(b'\x05')
+        elif selected == 7:
+            ser.write(b'\x06')
+        elif selected == 8:
+            ser.write(b'\x07')
+        elif selected == 9:
+            ser.write(b'\x08')
+        elif selected == 10:
+            ser.write(b'\x09')
+        elif selected == 11:
+            throttle = self.spinbox_value.value()
+            value = throttle + 128
+            byte = bytes([value])
+            ser.write(byte)
+        elif selected == 12:
+            ser.write(b'\x0A')
+        ser.close()
 
     def load_ui(self):
 
