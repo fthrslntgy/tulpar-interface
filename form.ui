@@ -74,7 +74,7 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>160</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -139,7 +139,7 @@
   <widget class="QPushButton" name="button_servoopen">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>460</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
@@ -152,7 +152,7 @@
   <widget class="QPushButton" name="button_servoclose">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>460</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -165,7 +165,7 @@
   <widget class="QPushButton" name="button_sendcommand">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>340</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -178,7 +178,7 @@
   <widget class="QPushButton" name="button_enginestop">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>580</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -191,7 +191,7 @@
   <widget class="QComboBox" name="combobox_command">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>340</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
@@ -211,23 +211,10 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_status">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>10</y>
-     <width>101</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;UYDU STATÜSÜ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="button_enginerun">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>580</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
@@ -240,7 +227,7 @@
   <widget class="Line" name="line_7">
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>690</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -253,7 +240,7 @@
   <widget class="Line" name="line_8">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>320</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -266,7 +253,7 @@
   <widget class="QLabel" name="label_run_value">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>340</x>
      <y>10</y>
      <width>291</width>
      <height>31</height>
@@ -279,7 +266,7 @@
   <widget class="QSpinBox" name="spinbox_value">
    <property name="geometry">
     <rect>
-     <x>700</x>
+     <x>610</x>
      <y>10</y>
      <width>81</width>
      <height>24</height>
@@ -381,27 +368,27 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_pl_2">
+  <widget class="QGraphicsView" name="gyro">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>110</y>
-     <width>251</width>
-     <height>191</height>
+     <width>261</width>
+     <height>171</height>
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_pl_3">
+  <widget class="QGraphicsView" name="map">
    <property name="geometry">
     <rect>
      <x>280</x>
      <y>110</y>
      <width>251</width>
-     <height>191</height>
+     <height>171</height>
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_pl_4">
+  <widget class="QGraphicsView" name="video">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -409,6 +396,51 @@
      <width>521</width>
      <height>331</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_gyro">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>290</y>
+     <width>261</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(148, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#ffffff;&quot;&gt;PITCH: - ROLL: - YAW: -&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_height_diff">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>290</y>
+     <width>251</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(148, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#ffffff;&quot;&gt;Yükseklik Farkı: -&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_status">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>10</y>
+     <width>141</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

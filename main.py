@@ -82,20 +82,14 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
-
-        self.combobox_command.addItem("1. Beklemede")
-        self.combobox_command.addItem("2. Yükselme")
-        self.combobox_command.addItem("3. Model uydu iniş ")
-        self.combobox_command.addItem("4. Ayrılma")
-        self.combobox_command.addItem("5. Görev yükü iniş 6")
-        self.combobox_command.addItem("6. Askıda kalma")
-        self.combobox_command.addItem("7. Görev yükü iniş 4")
-        self.combobox_command.addItem("8. Kurtarma")
-        self.combobox_command.addItem("9. Manuel servo açma")
-        self.combobox_command.addItem("10. Manuel servo kapama")
-        self.combobox_command.addItem("11. Manuel motor tahrik")
-        self.combobox_command.addItem("12. Manuel motor stop")
+        # Statuscomponents
+        for element in cns.SAT_STATUS_VARS:
+            self.combobox_command.addItem(element)
         self.button_sendcommand.clicked.connect(self.send_telecommand)
+
+        self.label_status.setAlignment(Qt.AlignCenter)
+        self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
+        self.label_status.setText("UNCONNECTED")
 
         # Graph components
         self.graphs = Graphs(self)
@@ -181,6 +175,10 @@ class Widget(Base, Form):
             i = i+1
         self.table_telemetry.scrollToBottom()
 
+    def setStatus(self, stat):
+
+        self.label_status.setText(cns.SAT_STATUS_VARS[stat])
+
     def connection(self):
 
         global com, first_connect, connected, quit
@@ -205,6 +203,8 @@ class Widget(Base, Form):
                 connected = True
                 self.button_connection.setStyleSheet("background-color: red")
                 self.button_connection.setText(cns.MAIN_DISCONNECT)
+                self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
+                self.label_status.setText("CONNECTED")
                 t1 = threading.Thread(target=com.getData)
                 t1.start()
 
@@ -223,6 +223,8 @@ class Widget(Base, Form):
                     connected = True
                     self.button_connection.setStyleSheet("background-color: red")
                     self.button_connection.setText(cns.MAIN_DISCONNECT)
+                    self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
+                    self.label_status.setText("CONNECTED")
                     t1 = threading.Thread(target=com.getData)
                     t1.start()
 
@@ -231,6 +233,8 @@ class Widget(Base, Form):
                 connected = False
                 self.button_connection.setStyleSheet("background-color: green")
                 self.button_connection.setText(cns.MAIN_CONNECT)
+                self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
+                self.label_status.setText("UNCONNECTED")
 
 
 def main():

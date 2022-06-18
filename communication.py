@@ -172,11 +172,17 @@ class Communication:
         row.append(weather_forecast)
 
         print(row)
+        # update csv
         with open(self.widget.session_directory + "/Telemetry.csv", 'a', newline='') as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerow(row)
+        # update telemetry table
         self.widget.addRow(row)
+        # update graphs
         self.widget.graphs.update_pl(latitude_pl, longitude_pl, altitude_pl)
         self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)
         self.widget.graphs.update_pl_hei(pressure_pl, height_pl, pressure_car, height_car)
         self.widget.graphs.update_sp_tmp_v(speed, tempe, b_voltage)
+        # update status, pitch-roll-yaw, height diff and video status
+        self.widget.setStatus(status)
+        #self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))

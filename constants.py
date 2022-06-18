@@ -2,6 +2,9 @@ UI_FILE = "form.ui"
 NUM_OF_VARS = 24
 TELEMETRY_LEN = 88
 TELEMETRY_PERIOD = 1
+SAT_STATUS_VARS = ("1. Beklemede", "2. Yükselme", "3. Model uydu iniş ", "4. Ayrılma",
+               "5. Görev yükü iniş 6", "6. Askıda kalma", "7. Görev yükü iniş 4", "8. Kurtarma",
+               "9. Manuel servo açma", "10. Manuel servo kapama", "11. Manuel motor tahrik", "12. Manuel motor stop")
 
 HEADER_BYTE_1 = b'\xab'
 HEADER_BYTE_2 = b'\xcd'
