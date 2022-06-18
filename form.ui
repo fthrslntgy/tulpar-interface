@@ -361,6 +361,56 @@
     </rect>
    </property>
   </widget>
+  <widget class="QGraphicsView" name="graph_pr_hei">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>380</y>
+     <width>361</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_sp_tmp_v">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>380</y>
+     <width>361</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_pl_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>251</width>
+     <height>191</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_pl_3">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>110</y>
+     <width>251</width>
+     <height>191</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_pl_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>521</width>
+     <height>331</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -12,6 +12,8 @@ GRAPH_WIDTH = 361
 GRAPH_HEIGHT = 261
 GRAPH_PAYLOAD_TITLE = "Görev Yükü"
 GRAPH_CARRIER_TITLE = "Taşıyıcı"
+GRAPH_PR_HEI_TITLE = "Basınç ve Yükseklik"
+GRAPH_SP_TMP_V_TITLE = "Hız, Sıcaklık ve Gerilim"
 GRAPH_X_MAX = 20
 GRAPH_PADDING = 0
 

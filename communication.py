@@ -178,3 +178,5 @@ class Communication:
         self.widget.addRow(row)
         self.widget.graphs.update_pl(latitude_pl, longitude_pl, altitude_pl)
         self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)
+        self.widget.graphs.update_pl_hei(pressure_pl, height_pl, pressure_car, height_car)
+        self.widget.graphs.update_sp_tmp_v(speed, tempe, b_voltage)
