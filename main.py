@@ -3,6 +3,7 @@ import os
 import serial.tools.list_ports
 import threading
 import csv
+import time
 from time import strftime
 from pathlib import Path
 
@@ -30,6 +31,12 @@ class Widget(Base, Form):
     def __init__(self, parent=None):
         super(self.__class__, self).__init__(parent)
         self.setupUi(self)
+
+        # Global variables about connection status
+        global com, first_connect, connected, quit
+        first_connect = True
+        connected = False
+        quit = False
 
         # Main window options
         self.image = None
@@ -91,6 +98,11 @@ class Widget(Base, Form):
         self.label_status.setStyleSheet("background-color: red; font-size: 10pt; font-weight: bold;")
         self.label_status.setText("UNCONNECTED")
 
+        self.label_timer.setAlignment(Qt.AlignCenter)
+        self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
+        self.session_time = "UPTIME 00 : 00"
+        self.label_timer.setText(self.session_time)
+
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
 
@@ -106,11 +118,17 @@ class Widget(Base, Form):
         # Graph components
         self.graphs = Graphs(self)
 
-        # Global variables about connection status
-        global com, first_connect, connected, quit
-        first_connect = True
-        connected = False
-        quit = False
+    def timer(self):
+
+        global connected
+        for min in range(0, 60):
+            if not connected:
+                break
+            for sec in range(0, 60):
+                if not connected:
+                    break
+                self.label_timer.setText("UPTIME {:02d} : {:02d}".format(min, sec))
+                time.sleep(1)
 
     def uploadVideo(self):
 
@@ -242,6 +260,8 @@ class Widget(Base, Form):
                 self.label_status.setText("CONNECTED")
                 t1 = threading.Thread(target=com.getData)
                 t1.start()
+                t2 = threading.Thread(target=self.timer)
+                t2.start()
 
         else:
             isConnected = com.q
@@ -262,6 +282,8 @@ class Widget(Base, Form):
                     self.label_status.setText("CONNECTED")
                     t1 = threading.Thread(target=com.getData)
                     t1.start()
+                    t2 = threading.Thread(target=self.timer)
+                    t2.start()
 
             else:
                 com.disconnect()
@@ -270,6 +292,8 @@ class Widget(Base, Form):
                 self.button_connection.setText(cns.MAIN_CONNECT)
                 self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
                 self.label_status.setText("UNCONNECTED")
+                self.session_time = "UPTIME 00 : 00"
+                self.label_timer.setText(self.session_time)
 
 
 def main():
