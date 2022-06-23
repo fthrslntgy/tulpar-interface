@@ -81,7 +81,6 @@ class Widget(Base, Form):
         self.telecommand = Telecommand(self)
         self.button_connection.setStyleSheet("background-color: green")
         self.button_connection.clicked.connect(self.connection)
-        self.button_connect_tele.setStyleSheet("background-color: green")
         self.button_connect_tele.clicked.connect(self.tele_connection)
 
         # Status and telecommand components
@@ -154,11 +153,11 @@ class Widget(Base, Form):
                 self.button_servoclose.setEnabled(True)
                 self.button_enginerun.setEnabled(True)
                 self.button_enginestop.setEnabled(True)
+                self.button_connect_tele.setStyleSheet("background-color: red")
             else:
                 self.button_connect_tele.setEnabled(True)
                 self.button_select_video.setEnabled(True)
                 self.button_send_video.setEnabled(True)
-
                 self.spinbox_value.setEnabled(False)
                 self.combobox_command.setEnabled(False)
                 self.button_sendcommand.setEnabled(False)
@@ -166,6 +165,7 @@ class Widget(Base, Form):
                 self.button_servoclose.setEnabled(False)
                 self.button_enginerun.setEnabled(False)
                 self.button_enginestop.setEnabled(False)
+                self.button_connect_tele.setStyleSheet("background-color: green")
 
         else:
             self.button_connect_tele.setEnabled(False)
@@ -178,6 +178,7 @@ class Widget(Base, Form):
             self.button_enginestop.setEnabled(False)
             self.button_select_video.setEnabled(False)
             self.button_send_video.setEnabled(False)
+            self.button_connect_tele.setStyleSheet("background-color: None")
 
     def uploadVideo(self):
 
