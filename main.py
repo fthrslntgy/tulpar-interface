@@ -126,6 +126,9 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
+        # Update buttons
+        self.update_buttons()
+
     def timer(self):
 
         global connected
@@ -137,6 +140,44 @@ class Widget(Base, Form):
                     break
                 self.label_timer.setText("UPTIME {:02d} : {:02d}".format(min, sec))
                 time.sleep(1)
+
+    def update_buttons(self):
+
+        global connected, tele_connected
+
+        if connected:
+            if tele_connected:
+                self.spinbox_value.setEnabled(True)
+                self.combobox_command.setEnabled(True)
+                self.button_sendcommand.setEnabled(True)
+                self.button_servoopen.setEnabled(True)
+                self.button_servoclose.setEnabled(True)
+                self.button_enginerun.setEnabled(True)
+                self.button_enginestop.setEnabled(True)
+            else:
+                self.button_connect_tele.setEnabled(True)
+                self.button_select_video.setEnabled(True)
+                self.button_send_video.setEnabled(True)
+
+                self.spinbox_value.setEnabled(False)
+                self.combobox_command.setEnabled(False)
+                self.button_sendcommand.setEnabled(False)
+                self.button_servoopen.setEnabled(False)
+                self.button_servoclose.setEnabled(False)
+                self.button_enginerun.setEnabled(False)
+                self.button_enginestop.setEnabled(False)
+
+        else:
+            self.button_connect_tele.setEnabled(False)
+            self.spinbox_value.setEnabled(False)
+            self.combobox_command.setEnabled(False)
+            self.button_sendcommand.setEnabled(False)
+            self.button_servoopen.setEnabled(False)
+            self.button_servoclose.setEnabled(False)
+            self.button_enginerun.setEnabled(False)
+            self.button_enginestop.setEnabled(False)
+            self.button_select_video.setEnabled(False)
+            self.button_send_video.setEnabled(False)
 
     def uploadVideo(self):
 
@@ -220,11 +261,15 @@ class Widget(Base, Form):
             self.button_connect_tele.setStyleSheet("background-color: red")
             tele_connected = True
 
+        self.update_buttons()
+
     def connection(self):
 
-        global com, first_connect, connected, quit
+        global com, first_connect, connected, tele_connected, quit
 
         if quit and connected:
+            if tele_connected:
+                self.tele_connection()
             com.disconnect()
 
         elif quit:
@@ -274,6 +319,8 @@ class Widget(Base, Form):
                     t2.start()
 
             else:
+                if tele_connected:
+                    self.tele_connection()
                 com.disconnect()
                 connected = False
                 self.button_connection.setStyleSheet("background-color: green")
@@ -282,6 +329,8 @@ class Widget(Base, Form):
                 self.label_status.setText("UNCONNECTED")
                 self.session_time = "UPTIME 00 : 00"
                 self.label_timer.setText(self.session_time)
+
+        self.update_buttons()
 
 
 def main():
