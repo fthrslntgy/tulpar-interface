@@ -16,6 +16,7 @@ from PySide2.QtUiTools import loadUiType
 from communication import Communication
 from telemetry_table import TelemetryTable
 from graphs import Graphs
+from telecommand import Telecommand
 import constants as cns
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,9 +34,10 @@ class Widget(Base, Form):
         self.setupUi(self)
 
         # Global variables about connection status
-        global com, first_connect, connected, quit
+        global com, first_connect, connected, tele_connected, quit
         first_connect = True
         connected = False
+        tele_connected = False
         quit = False
 
         # Main window options
@@ -67,10 +69,7 @@ class Widget(Base, Form):
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
 
-        # Logo component
-        self.logo.setStyleSheet("background: url(images/logo.jpg)")
-
-        # Port and baud components
+        # Port, baud and connection components
         ports = serial.tools.list_ports.comports()
         for element in ports:
             self.combobox_ports.addItem(str(element).split()[0])
@@ -79,21 +78,13 @@ class Widget(Base, Form):
         self.button_refresh.setIcon(QIcon("images/refresh.png"))
         self.button_refresh.clicked.connect(self.refreshPorts)
 
-        # Connect button component
+        self.telecommand = Telecommand(self)
         self.button_connection.setStyleSheet("background-color: green")
         self.button_connection.clicked.connect(self.connection)
+        self.button_connect_tele.setStyleSheet("background-color: green")
+        self.button_connect_tele.clicked.connect(self.tele_connection)
 
-        # Telemetry table component
-        self.table_telemetry = TelemetryTable(self)
-        self.table_telemetry.setStyleSheet("background-color: white")
-        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
-
-        # Status components
-        for element in cns.SAT_STATUS_VARS:
-            self.combobox_command.addItem(element)
-        self.button_sendcommand.clicked.connect(self.send_telecommand)
-
+        # Status and telecommand components
         self.label_status.setAlignment(Qt.AlignCenter)
         self.label_status.setStyleSheet("background-color: red; font-size: 10pt; font-weight: bold;")
         self.label_status.setText("UNCONNECTED")
@@ -103,8 +94,19 @@ class Widget(Base, Form):
         self.session_time = "UPTIME 00 : 00"
         self.label_timer.setText(self.session_time)
 
+        for element in cns.SAT_STATUS_VARS:
+            self.combobox_command.addItem(element)
+        self.button_sendcommand.clicked.connect(lambda: self.telecommand.send_telecommand(self.combobox_command.currentText()))
+        self.button_servoopen.clicked.connect(self.telecommand.send_servo_open)
+        self.button_servoclose.clicked.connect(self.telecommand.send_servo_close)
+        self.button_enginerun.clicked.connect(lambda: self.telecommand.send_engine_run(self.spinbox_value.value()))
+        self.button_enginestop.clicked.connect(self.telecommand.send_engine_stop)
+
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
+
+        # Logo component
+        self.logo.setStyleSheet("background: url(images/logo.jpg)")
 
         # Gyro and height_diff compontents
         self.label_gyro.setAlignment(Qt.AlignCenter)
@@ -117,6 +119,12 @@ class Widget(Base, Form):
 
         # Graph components
         self.graphs = Graphs(self)
+
+        # Telemetry table component
+        self.table_telemetry = TelemetryTable(self)
+        self.table_telemetry.setStyleSheet("background-color: white")
+        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
     def timer(self):
 
@@ -135,42 +143,6 @@ class Widget(Base, Form):
         fileName, _ = QFileDialog.getOpenFileName(self, "Choose a file", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
         if fileName != '':
             self.lineedit_select_video.setText(fileName)
-
-    def send_telecommand(self):
-
-        ser = serial.Serial("/dev/ttyUSB0", 9600, timeout=10)
-        telecommand = self.combobox_command.currentText()
-        index = telecommand.index(".")
-        selected = int(telecommand[0:index])
-
-        if selected == 1:
-            ser.write(b'\x00')
-        elif selected == 2:
-            ser.write(b'\x01')
-        elif selected == 3:
-            ser.write(b'\x02')
-        elif selected == 4:
-            ser.write(b'\x03')
-        elif selected == 5:
-            ser.write(b'\x04')
-        elif selected == 6:
-            ser.write(b'\x05')
-        elif selected == 7:
-            ser.write(b'\x06')
-        elif selected == 8:
-            ser.write(b'\x07')
-        elif selected == 9:
-            ser.write(b'\x08')
-        elif selected == 10:
-            ser.write(b'\x09')
-        elif selected == 11:
-            throttle = self.spinbox_value.value()
-            value = throttle + 128
-            byte = bytes([value])
-            ser.write(byte)
-        elif selected == 12:
-            ser.write(b'\x0A')
-        ser.close()
 
     def load_ui(self):
 
@@ -231,6 +203,22 @@ class Widget(Base, Form):
             self.label_video_status.setText("Aktarım Durumu: Evet")
         else:
             self.label_video_status.setText("Aktarım Durumu: Hayır")
+
+    def tele_connection(self):
+
+        global tele_connected
+
+        if tele_connected:
+            self.telecommand.disconnect()
+            tele_connected = False
+            self.button_connect_tele.setStyleSheet("background-color: green")
+
+        else:
+            port = self.combobox_ports.currentText()
+            baud = self.combobox_bauds.currentText()
+            com = self.telecommand.connect(port, baud)
+            self.button_connect_tele.setStyleSheet("background-color: red")
+            tele_connected = True
 
     def connection(self):
 

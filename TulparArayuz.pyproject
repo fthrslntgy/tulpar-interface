@@ -1,3 +1,3 @@
 {
-    "files": ["communication.py","main.py","form.ui","telemetry_table.py","graphs.py", "constants.py"]
+    "files": ["communication.py","form.ui","graphs.py","constants.py","telemetry_table.py","main.py","telecommand.py"]
 }

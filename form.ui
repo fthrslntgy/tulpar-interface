@@ -63,7 +63,7 @@
     <rect>
      <x>10</x>
      <y>70</y>
-     <width>61</width>
+     <width>71</width>
      <height>24</height>
     </rect>
    </property>
@@ -292,9 +292,9 @@
   <widget class="QPushButton" name="button_connect_tele">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>90</x>
      <y>70</y>
-     <width>61</width>
+     <width>71</width>
      <height>24</height>
     </rect>
    </property>
