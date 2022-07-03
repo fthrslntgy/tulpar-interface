@@ -81,7 +81,7 @@ class Widget(Base, Form):
         self.telecommand = Telecommand(self)
         self.button_connection.setStyleSheet("background-color: green")
         self.button_connection.clicked.connect(self.connection)
-        self.button_connect_tele.clicked.connect(self.tele_connection)
+        self.button_connection_tele.clicked.connect(self.tele_connection)
 
         # Status and telecommand components
         self.label_status.setAlignment(Qt.AlignCenter)
@@ -95,17 +95,17 @@ class Widget(Base, Form):
 
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
-        self.button_sendcommand.clicked.connect(lambda: self.telecommand.send_telecommand(self.combobox_command.currentText()))
-        self.button_servoopen.clicked.connect(self.telecommand.send_servo_open)
-        self.button_servoclose.clicked.connect(self.telecommand.send_servo_close)
-        self.button_enginerun.clicked.connect(lambda: self.telecommand.send_engine_run(self.spinbox_value.value()))
-        self.button_enginestop.clicked.connect(self.telecommand.send_engine_stop)
+        self.button_send_command.clicked.connect(lambda: self.telecommand.send_telecommand(self.combobox_command.currentText()))
+        self.button_servo_open.clicked.connect(self.telecommand.send_servo_open)
+        self.button_servo_close.clicked.connect(self.telecommand.send_servo_close)
+        self.button_engine_run.clicked.connect(lambda: self.telecommand.send_engine_run(self.spinbox_value.value()))
+        self.button_engine_stop.clicked.connect(self.telecommand.send_engine_stop)
 
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
 
         # Logo component
-        self.logo.setStyleSheet("background: url(images/logo.jpg)")
+        self.label_logo.setStyleSheet("background: url(images/logo.jpg)")
 
         # Gyro and height_diff compontents
         self.label_gyro.setAlignment(Qt.AlignCenter)
@@ -148,37 +148,37 @@ class Widget(Base, Form):
             if tele_connected:
                 self.spinbox_value.setEnabled(True)
                 self.combobox_command.setEnabled(True)
-                self.button_sendcommand.setEnabled(True)
-                self.button_servoopen.setEnabled(True)
-                self.button_servoclose.setEnabled(True)
-                self.button_enginerun.setEnabled(True)
-                self.button_enginestop.setEnabled(True)
-                self.button_connect_tele.setStyleSheet("background-color: red")
+                self.button_send_command.setEnabled(True)
+                self.button_servo_open.setEnabled(True)
+                self.button_servo_close.setEnabled(True)
+                self.button_engine_run.setEnabled(True)
+                self.button_engine_stop.setEnabled(True)
+                self.button_connection_tele.setStyleSheet("background-color: red")
             else:
-                self.button_connect_tele.setEnabled(True)
+                self.button_connection_tele.setEnabled(True)
                 self.button_select_video.setEnabled(True)
                 self.button_send_video.setEnabled(True)
                 self.spinbox_value.setEnabled(False)
                 self.combobox_command.setEnabled(False)
-                self.button_sendcommand.setEnabled(False)
-                self.button_servoopen.setEnabled(False)
-                self.button_servoclose.setEnabled(False)
-                self.button_enginerun.setEnabled(False)
-                self.button_enginestop.setEnabled(False)
-                self.button_connect_tele.setStyleSheet("background-color: green")
+                self.button_send_command.setEnabled(False)
+                self.button_servo_open.setEnabled(False)
+                self.button_servo_close.setEnabled(False)
+                self.button_engine_run.setEnabled(False)
+                self.button_engine_stop.setEnabled(False)
+                self.button_connection_tele.setStyleSheet("background-color: green")
 
         else:
-            self.button_connect_tele.setEnabled(False)
+            self.button_connection_tele.setEnabled(False)
             self.spinbox_value.setEnabled(False)
             self.combobox_command.setEnabled(False)
-            self.button_sendcommand.setEnabled(False)
-            self.button_servoopen.setEnabled(False)
-            self.button_servoclose.setEnabled(False)
-            self.button_enginerun.setEnabled(False)
-            self.button_enginestop.setEnabled(False)
+            self.button_send_command.setEnabled(False)
+            self.button_servo_open.setEnabled(False)
+            self.button_servo_close.setEnabled(False)
+            self.button_engine_run.setEnabled(False)
+            self.button_engine_stop.setEnabled(False)
             self.button_select_video.setEnabled(False)
             self.button_send_video.setEnabled(False)
-            self.button_connect_tele.setStyleSheet("background-color: None")
+            self.button_connection_tele.setStyleSheet("background-color: None")
 
     def uploadVideo(self):
 
@@ -253,13 +253,13 @@ class Widget(Base, Form):
         if tele_connected:
             self.telecommand.disconnect()
             tele_connected = False
-            self.button_connect_tele.setStyleSheet("background-color: green")
+            self.button_connection_tele.setStyleSheet("background-color: green")
 
         else:
             port = self.combobox_ports.currentText()
             baud = self.combobox_bauds.currentText()
-            com = self.telecommand.connect(port, baud)
-            self.button_connect_tele.setStyleSheet("background-color: red")
+            self.telecommand.connect(port, baud)
+            self.button_connection_tele.setStyleSheet("background-color: red")
             tele_connected = True
 
         self.update_buttons()
