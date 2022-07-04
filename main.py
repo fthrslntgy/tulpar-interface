@@ -85,13 +85,8 @@ class Widget(Base, Form):
 
         # Status and telecommand components
         self.label_status.setAlignment(Qt.AlignCenter)
-        self.label_status.setStyleSheet("background-color: red; font-size: 10pt; font-weight: bold;")
-        self.label_status.setText("UNCONNECTED")
-
         self.label_timer.setAlignment(Qt.AlignCenter)
         self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
-        self.session_time = "UPTIME 00 : 00"
-        self.label_timer.setText(self.session_time)
 
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
@@ -103,6 +98,9 @@ class Widget(Base, Form):
 
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
+        self.label_video_status.setAlignment(Qt.AlignCenter)
+        self.label_video_status.setStyleSheet("background-color: black; font-size: 8pt; font-weight: bold; color: white")
+        self.label_video_status.setText("Aktarım Durumu: -")
 
         # Logo component
         self.label_logo.setStyleSheet("background: url(images/logo.jpg)")
@@ -112,9 +110,6 @@ class Widget(Base, Form):
         self.label_gyro.setStyleSheet("background-color: darkred; font-size: 8pt; font-weight: bold; color: white")
         self.label_height_diff.setAlignment(Qt.AlignCenter)
         self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
-        self.label_video_status.setAlignment(Qt.AlignCenter)
-        self.label_video_status.setStyleSheet("background-color: black; font-size: 8pt; font-weight: bold; color: white")
-        self.label_video_status.setText("Aktarım Durumu: -")
 
         # Graph components
         self.graphs = Graphs(self)
@@ -145,7 +140,17 @@ class Widget(Base, Form):
         global connected, tele_connected
 
         if connected:
+
+            self.button_connection.setStyleSheet("background-color: red")
+            self.button_connection.setText(cns.MAIN_DISCONNECT)
+            self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
+            self.label_status.setText("CONNECTED")
+            self.button_select_video.setEnabled(True)
+            self.button_connection_tele.setEnabled(True)
+            self.button_send_video.setEnabled(True)
+
             if tele_connected:
+                self.button_connection_tele.setStyleSheet("background-color: red")
                 self.spinbox_value.setEnabled(True)
                 self.combobox_command.setEnabled(True)
                 self.button_send_command.setEnabled(True)
@@ -153,11 +158,9 @@ class Widget(Base, Form):
                 self.button_servo_close.setEnabled(True)
                 self.button_engine_run.setEnabled(True)
                 self.button_engine_stop.setEnabled(True)
-                self.button_connection_tele.setStyleSheet("background-color: red")
+
             else:
-                self.button_connection_tele.setEnabled(True)
-                self.button_select_video.setEnabled(True)
-                self.button_send_video.setEnabled(True)
+                self.button_connection_tele.setStyleSheet("background-color: green")
                 self.spinbox_value.setEnabled(False)
                 self.combobox_command.setEnabled(False)
                 self.button_send_command.setEnabled(False)
@@ -165,10 +168,18 @@ class Widget(Base, Form):
                 self.button_servo_close.setEnabled(False)
                 self.button_engine_run.setEnabled(False)
                 self.button_engine_stop.setEnabled(False)
-                self.button_connection_tele.setStyleSheet("background-color: green")
 
         else:
+            self.button_connection.setStyleSheet("background-color: green")
+            self.button_connection.setText(cns.MAIN_CONNECT)
+            self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
+            self.label_status.setText("UNCONNECTED")
+            self.label_timer.setText("UPTIME 00 : 00")
+            self.button_select_video.setEnabled(False)
+            self.button_send_video.setEnabled(False)
+
             self.button_connection_tele.setEnabled(False)
+            self.button_connection_tele.setStyleSheet("background-color: None")
             self.spinbox_value.setEnabled(False)
             self.combobox_command.setEnabled(False)
             self.button_send_command.setEnabled(False)
@@ -176,13 +187,10 @@ class Widget(Base, Form):
             self.button_servo_close.setEnabled(False)
             self.button_engine_run.setEnabled(False)
             self.button_engine_stop.setEnabled(False)
-            self.button_select_video.setEnabled(False)
-            self.button_send_video.setEnabled(False)
-            self.button_connection_tele.setStyleSheet("background-color: None")
 
     def uploadVideo(self):
 
-        fileName, _ = QFileDialog.getOpenFileName(self, "Choose a file", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
+        fileName, _ = QFileDialog.getOpenFileName(self, "Gönderilecek Video Dosyasını Seçiniz", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
         if fileName != '':
             self.lineedit_select_video.setText(fileName)
 
@@ -253,13 +261,11 @@ class Widget(Base, Form):
         if tele_connected:
             self.telecommand.disconnect()
             tele_connected = False
-            self.button_connection_tele.setStyleSheet("background-color: green")
 
         else:
             port = self.combobox_ports.currentText()
             baud = self.combobox_bauds.currentText()
             self.telecommand.connect(port, baud)
-            self.button_connection_tele.setStyleSheet("background-color: red")
             tele_connected = True
 
         self.update_buttons()
@@ -288,10 +294,6 @@ class Widget(Base, Form):
                     writer.writerow(cns.TABLE_TITLE)
                 first_connect = False
                 connected = True
-                self.button_connection.setStyleSheet("background-color: red")
-                self.button_connection.setText(cns.MAIN_DISCONNECT)
-                self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
-                self.label_status.setText("CONNECTED")
                 t1 = threading.Thread(target=com.getData)
                 t1.start()
                 t2 = threading.Thread(target=self.timer)
@@ -310,10 +312,6 @@ class Widget(Base, Form):
                         writer = csv.writer(file, delimiter=',')
                         writer.writerow(cns.TABLE_TITLE)
                     connected = True
-                    self.button_connection.setStyleSheet("background-color: red")
-                    self.button_connection.setText(cns.MAIN_DISCONNECT)
-                    self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
-                    self.label_status.setText("CONNECTED")
                     t1 = threading.Thread(target=com.getData)
                     t1.start()
                     t2 = threading.Thread(target=self.timer)
@@ -324,12 +322,6 @@ class Widget(Base, Form):
                     self.tele_connection()
                 com.disconnect()
                 connected = False
-                self.button_connection.setStyleSheet("background-color: green")
-                self.button_connection.setText(cns.MAIN_CONNECT)
-                self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
-                self.label_status.setText("UNCONNECTED")
-                self.session_time = "UPTIME 00 : 00"
-                self.label_timer.setText(self.session_time)
 
         self.update_buttons()
 
