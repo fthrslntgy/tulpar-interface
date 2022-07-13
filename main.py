@@ -10,14 +10,18 @@ from pathlib import Path
 from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox, QFileDialog
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
-from PySide2.QtGui import QIcon, QPalette, QColor, Qt
+from PySide2.QtGui import QIcon, QPalette, QColor, Qt, QPixmap, QImage
 from PySide2.QtUiTools import loadUiType
 
 from communication import Communication
 from telemetry_table import TelemetryTable
 from graphs import Graphs
 from telecommand import Telecommand
+from capture_camera import CaptureCamera
 import constants as cns
+
+# import the require packages.
+from PySide2 import QtCore
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 Form, Base = loadUiType(os.path.join(current_dir, cns.UI_FILE))
@@ -120,8 +124,17 @@ class Widget(Base, Form):
         self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
+        # Camera component
+        self.camurl = "rtsp://10.5.38.63:8554/mjpeg/1"
+        self.CaptureCamera = CaptureCamera(self.camurl)
+        self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
+        self.CaptureCamera.start()
+
         # Update buttons
         self.update_buttons()
+
+    def ShowCamera(self, frame: QImage) -> None:
+        self.label_camera.setPixmap(QPixmap.fromImage(frame))
 
     def timer(self):
 

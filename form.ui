@@ -388,16 +388,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphics_video">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>310</y>
-     <width>521</width>
-     <height>331</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_gyro">
    <property name="geometry">
     <rect>
@@ -557,6 +547,19 @@
      <y>75</y>
      <width>141</width>
      <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_camera">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>521</width>
+     <height>331</height>
     </rect>
    </property>
    <property name="text">
