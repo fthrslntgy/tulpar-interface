@@ -368,16 +368,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphics_gyro">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>261</width>
-     <height>171</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QGraphicsView" name="graphics_map">
    <property name="geometry">
     <rect>
@@ -564,6 +554,16 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QOpenGLWidget" name="opengl_gyro">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>110</y>
+     <width>261</width>
+     <height>171</height>
+    </rect>
    </property>
   </widget>
  </widget>
