@@ -183,8 +183,13 @@ class Communication:
         self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)
         self.widget.graphs.update_pl_hei(pressure_pl, height_pl, pressure_car, height_car)
         self.widget.graphs.update_sp_tmp_v(speed, tempe, b_voltage)
+
         # update status, pitch-roll-yaw, height diff and video status
         self.widget.setStatus(status)
+        self.widget.transform.RotateX(pitch)
+        self.widget.transform.RotateY(roll)
+        self.widget.transform.RotateZ(yaw)
+        self.widget.vtkWidget.update()
         self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setVideoStatus(status)

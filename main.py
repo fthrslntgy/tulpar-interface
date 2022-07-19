@@ -7,21 +7,23 @@ import time
 from time import strftime
 from pathlib import Path
 
+import vtk
+from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+
 from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView, QMessageBox, QFileDialog
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt, QPixmap, QImage
 from PySide2.QtUiTools import loadUiType
+from PySide2 import QtCore
 
 from communication import Communication
 from telemetry_table import TelemetryTable
 from graphs import Graphs
 from telecommand import Telecommand
 from capture_camera import CaptureCamera
+from model import Model
 import constants as cns
-
-# import the require packages.
-from PySide2 import QtCore
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 Form, Base = loadUiType(os.path.join(current_dir, cns.UI_FILE))
@@ -129,6 +131,44 @@ class Widget(Base, Form):
         self.CaptureCamera = CaptureCamera(self.camurl)
         self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
         self.CaptureCamera.start()
+
+        # Model component
+        filename = "model.obj"
+        self.reader = vtk.vtkOBJReader()
+        self.reader.SetFileName(filename)
+
+        self.vl = QVBoxLayout()
+        self.frame_model.setLayout(self.vl)
+        self.frame_model.setLineWidth(0.6)
+        self.frame_model.setStyleSheet("border:1px solid #000000; background-color:#7FD5FF")
+        self.coneMapper2 = vtk.vtkPolyDataMapper()
+        self.vtkWidget = QVTKRenderWindowInteractor(self.frame_model)
+        self.vl.addWidget(self.vtkWidget)
+
+        self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.ren = vtk.vtkRenderer()
+        self.transform = vtk.vtkTransform()
+        self.transform.RotateX(-90)
+        self.transform.RotateY(0)
+        self.transform.RotateZ(0)
+        self.transformFilter = vtk.vtkTransformPolyDataFilter()
+        self.transformFilter.SetTransform(self.transform)
+        self.transformFilter.SetInputConnection(self.reader.GetOutputPort())
+        self.transformFilter.Update()
+        if vtk.VTK_MAJOR_VERSION <= 5:
+            self.coneMapper2.SetInput(self.transformFilter.GetOutput())
+        else:
+            self.coneMapper2.SetInputConnection(self.transformFilter.GetOutputPort())
+
+        self.actor2 = vtk.vtkActor()
+        self.actor2.SetMapper(self.coneMapper2)
+        self.actor2.GetProperty().SetColor(0.5, 0.5, 0.5)
+        self.actor2.SetScale(0.5, 0.5, 0.5)
+        self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
+        self.ren.AddActor(self.actor2)
+        self.ren.SetBackground(0.496, 0.832, 0.996)
+        self.iren.Initialize()
+        self.iren.Start()
 
         # Update buttons
         self.update_buttons()

@@ -3,3 +3,4 @@ pyqtgraph
 serial
 pyserial
 opencv-python
+vtk

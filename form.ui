@@ -556,7 +556,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QOpenGLWidget" name="opengl_gyro">
+  <widget class="QFrame" name="frame_model">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -564,6 +564,12 @@
      <width>261</width>
      <height>171</height>
     </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
    </property>
   </widget>
  </widget>
