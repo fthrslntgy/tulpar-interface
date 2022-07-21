@@ -5,6 +5,7 @@ import threading
 import csv
 import time
 from time import strftime
+from ftplib import FTP
 from pathlib import Path
 
 import vtk
@@ -104,6 +105,7 @@ class Widget(Base, Form):
 
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
+        self.button_send_video.clicked.connect(self.sendVideo)
         self.label_video_status.setAlignment(Qt.AlignCenter)
         self.label_video_status.setStyleSheet("background-color: black; font-size: 8pt; font-weight: bold; color: white")
         self.label_video_status.setText("Aktarım Durumu: -")
@@ -127,14 +129,14 @@ class Widget(Base, Form):
         self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
 
         # Camera component
-        self.camurl = "rtsp://10.5.38.63:8554/mjpeg/1"
+        self.camurl = "rtsp://10.5.39.149:8554/mjpeg/1"
         self.CaptureCamera = CaptureCamera(self.camurl)
         self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
         self.CaptureCamera.start()
 
         # Model component
-        filename = "model.obj"
-        self.reader = vtk.vtkOBJReader()
+        filename = "model.stl"
+        self.reader = vtk.vtkSTLReader()
         self.reader.SetFileName(filename)
 
         self.vl = QVBoxLayout()
@@ -246,6 +248,15 @@ class Widget(Base, Form):
         fileName, _ = QFileDialog.getOpenFileName(self, "Gönderilecek Video Dosyasını Seçiniz", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
         if fileName != '':
             self.lineedit_select_video.setText(fileName)
+
+    def sendVideo(self):
+
+        file_name = self.lineedit_select_video.text()
+        session = FTP('IP', 'USERNAME', 'PASS') # CHANGE!
+        file = open(file_name, 'rb')
+        session.storbinary('STOR file.mp4', file)
+        file.close()
+        session.quit()
 
     def load_ui(self):
 
