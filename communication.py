@@ -191,5 +191,7 @@ class Communication:
         self.widget.transform.RotateZ(yaw)
         self.widget.vtkWidget.update()
         self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
+
+        # self.widget.updateMap(float("{:.4f}".format(latitude_pl)), float("{:.4f}".format(longitude_pl)))
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setVideoStatus(status)

@@ -1,9 +1,11 @@
 # This Python file uses the following encoding: utf-8
 import os
+import io
 import serial.tools.list_ports
 import threading
 import csv
 import time
+import folium
 from time import strftime
 from ftplib import FTP
 from pathlib import Path
@@ -15,6 +17,7 @@ from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView,
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt, QPixmap, QImage
+from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtUiTools import loadUiType
 from PySide2 import QtCore
 
@@ -23,7 +26,7 @@ from telemetry_table import TelemetryTable
 from graphs import Graphs
 from telecommand import Telecommand
 from capture_camera import CaptureCamera
-from model import Model
+# from model import Model
 import constants as cns
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -113,28 +116,7 @@ class Widget(Base, Form):
         # Logo component
         self.label_logo.setStyleSheet("background: url(images/logo.jpg)")
 
-        # Gyro and height_diff compontents
-        self.label_gyro.setAlignment(Qt.AlignCenter)
-        self.label_gyro.setStyleSheet("background-color: darkred; font-size: 8pt; font-weight: bold; color: white")
-        self.label_height_diff.setAlignment(Qt.AlignCenter)
-        self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
-
-        # Graph components
-        self.graphs = Graphs(self)
-
-        # Telemetry table component
-        self.table_telemetry = TelemetryTable(self)
-        self.table_telemetry.setStyleSheet("background-color: white")
-        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
-
-        # Camera component
-        self.camurl = "rtsp://10.5.39.149:8554/mjpeg/1"
-        self.CaptureCamera = CaptureCamera(self.camurl)
-        self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
-        self.CaptureCamera.start()
-
-        # Model component
+        # Gyro (model) compontents
         filename = "model.stl"
         self.reader = vtk.vtkSTLReader()
         self.reader.SetFileName(filename)
@@ -172,30 +154,47 @@ class Widget(Base, Form):
         self.iren.Initialize()
         self.iren.Start()
 
+        self.label_gyro.setAlignment(Qt.AlignCenter)
+        self.label_gyro.setStyleSheet("background-color: darkred; font-size: 8pt; font-weight: bold; color: white")
+
+        # Map components
+        self.vm = QVBoxLayout()
+        coordinates = (39.9211819,32.7983108)
+        self.m = folium.Map(tiles='Stamen Terrain', zoom_start=14, location=coordinates)
+        data = io.BytesIO()
+        self.m.save(data, close_file=False)
+        self.webView = QWebEngineView()
+        self.webView.setHtml(data.getvalue().decode())
+        self.vm.addWidget(self.webView)
+        self.frame_map.setLayout(self.vm)
+        self.updateMap(39.9211819,32.7983108)
+
+        self.label_height_diff.setAlignment(Qt.AlignCenter)
+        self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
+
+        # Graph components
+        self.graphs = Graphs(self)
+
+        # Camera component
+        self.camurl = "rtsp://10.5.39.149:8554/mjpeg/1"
+        self.CaptureCamera = CaptureCamera(self.camurl)
+        self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
+        self.CaptureCamera.start()
+
+        # Telemetry table component
+        self.table_telemetry = TelemetryTable(self)
+        self.table_telemetry.setStyleSheet("background-color: white")
+        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
+
         # Update buttons
         self.update_buttons()
-
-    def ShowCamera(self, frame: QImage) -> None:
-        self.label_camera.setPixmap(QPixmap.fromImage(frame))
-
-    def timer(self):
-
-        global connected
-        for min in range(0, 60):
-            if not connected:
-                break
-            for sec in range(0, 60):
-                if not connected:
-                    break
-                self.label_timer.setText("UPTIME {:02d} : {:02d}".format(min, sec))
-                time.sleep(1)
 
     def update_buttons(self):
 
         global connected, tele_connected
 
         if connected:
-
             self.button_connection.setStyleSheet("background-color: red")
             self.button_connection.setText(cns.MAIN_DISCONNECT)
             self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
@@ -243,6 +242,25 @@ class Widget(Base, Form):
             self.button_engine_run.setEnabled(False)
             self.button_engine_stop.setEnabled(False)
 
+    def refreshPorts(self):
+
+        self.combobox_ports.clear()
+        ports = serial.tools.list_ports.comports()
+        for element in ports:
+            self.combobox_ports.addItem(str(element).split()[0])
+
+    def timer(self):
+
+        global connected
+        for min in range(0, 60):
+            if not connected:
+                break
+            for sec in range(0, 60):
+                if not connected:
+                    break
+                self.label_timer.setText("UPTIME {:02d} : {:02d}".format(min, sec))
+                time.sleep(1)
+
     def uploadVideo(self):
 
         fileName, _ = QFileDialog.getOpenFileName(self, "Gönderilecek Video Dosyasını Seçiniz", ".", "Video Files (*.mp4 *.flv *.ts *.mts *.avi)")
@@ -258,33 +276,15 @@ class Widget(Base, Form):
         file.close()
         session.quit()
 
-    def load_ui(self):
+    def updateMap(self, lat, lon):
 
-        loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
-        ui_file = QFile(path)
-        ui_file.open(QFile.ReadOnly)
-        loader.load(ui_file, self)
-        ui_file.close()
+        folium.Marker([lat, lon]).add_to(self.m)
+        data = io.BytesIO()
+        self.m.save(data, close_file=False)
+        self.webView.setHtml(data.getvalue().decode())
 
-    def closeEvent(self, event):
-
-        global quit
-        close = QMessageBox.question(self, cns.MAIN_EXIT_TITLE, cns.MAIN_EXIT_MESSAGE, QMessageBox.Yes | QMessageBox.No)
-        if close == QMessageBox.Yes:
-            quit = True
-            event.accept()
-            self.connection()
-        else:
-            quit = False
-            event.ignore()
-
-    def refreshPorts(self):
-
-        self.combobox_ports.clear()
-        ports = serial.tools.list_ports.comports()
-        for element in ports:
-            self.combobox_ports.addItem(str(element).split()[0])
+    def ShowCamera(self, frame: QImage) -> None:
+        self.label_camera.setPixmap(QPixmap.fromImage(frame))
 
     def addRow(self, list):
 
@@ -301,6 +301,13 @@ class Widget(Base, Form):
 
         self.label_status.setText(cns.SAT_STATUS_VARS[stat])
 
+    def setVideoStatus(self, status):
+
+        if status == 0:
+            self.label_video_status.setText("Aktarım Durumu: Evet")
+        else:
+            self.label_video_status.setText("Aktarım Durumu: Hayır")
+
     def setPRY(self, pitch, roll, yaw):
 
         text = "PITCH: " + str(pitch) + " ROLL: " + str(roll) + " YAW: " + str(yaw)
@@ -310,29 +317,6 @@ class Widget(Base, Form):
 
         text = "Yükseklik Farkı: " + str(height_diff)
         self.label_height_diff.setText(text)
-
-    def setVideoStatus(self, status):
-
-        if status == 0:
-            self.label_video_status.setText("Aktarım Durumu: Evet")
-        else:
-            self.label_video_status.setText("Aktarım Durumu: Hayır")
-
-    def tele_connection(self):
-
-        global tele_connected
-
-        if tele_connected:
-            self.telecommand.disconnect()
-            tele_connected = False
-
-        else:
-            port = self.combobox_ports.currentText()
-            baud = self.combobox_bauds.currentText()
-            self.telecommand.connect(port, baud)
-            tele_connected = True
-
-        self.update_buttons()
 
     def connection(self):
 
@@ -388,6 +372,43 @@ class Widget(Base, Form):
                 connected = False
 
         self.update_buttons()
+
+    def tele_connection(self):
+
+        global tele_connected
+
+        if tele_connected:
+            self.telecommand.disconnect()
+            tele_connected = False
+
+        else:
+            port = self.combobox_ports.currentText()
+            baud = self.combobox_bauds.currentText()
+            self.telecommand.connect(port, baud)
+            tele_connected = True
+
+        self.update_buttons()
+
+    def closeEvent(self, event):
+
+        global quit
+        close = QMessageBox.question(self, cns.MAIN_EXIT_TITLE, cns.MAIN_EXIT_MESSAGE, QMessageBox.Yes | QMessageBox.No)
+        if close == QMessageBox.Yes:
+            quit = True
+            event.accept()
+            self.connection()
+        else:
+            quit = False
+            event.ignore()
+
+    def load_ui(self):
+
+        loader = QUiLoader()
+        path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
+        ui_file = QFile(path)
+        ui_file.open(QFile.ReadOnly)
+        loader.load(ui_file, self)
+        ui_file.close()
 
 
 def main():

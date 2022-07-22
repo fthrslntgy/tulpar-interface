@@ -368,16 +368,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphics_map">
-   <property name="geometry">
-    <rect>
-     <x>280</x>
-     <y>110</y>
-     <width>251</width>
-     <height>171</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_gyro">
    <property name="geometry">
     <rect>
@@ -562,6 +552,22 @@
      <x>10</x>
      <y>110</y>
      <width>261</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_map">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>110</y>
+     <width>251</width>
      <height>171</height>
     </rect>
    </property>

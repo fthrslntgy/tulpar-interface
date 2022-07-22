@@ -4,3 +4,4 @@ serial
 pyserial
 opencv-python
 vtk
+folium
