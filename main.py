@@ -97,7 +97,8 @@ class Widget(Base, Form):
         self.label_status.setAlignment(Qt.AlignCenter)
         self.label_timer.setAlignment(Qt.AlignCenter)
         self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
-
+        self.spinbox_value.setStyleSheet("background-color: black;")
+    
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
         self.button_send_command.clicked.connect(lambda: self.telecommand.send_telecommand(self.combobox_command.currentText()))
