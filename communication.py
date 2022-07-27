@@ -4,6 +4,7 @@ from time import sleep
 import struct
 import constants as cns
 import csv
+from weather import Weather
 
 
 class Communication:
@@ -15,6 +16,11 @@ class Communication:
         self.widget = widget
         self.q = False
         self.ser = serial.Serial()
+        self.weather = Weather()
+
+        self.last_pitch = 0
+        self.last_roll = 0
+        self.last_yaw = 0
 
     def connect(self):
 
@@ -44,7 +50,7 @@ class Communication:
         while self.q:
             try:
                 byte = self.ser.read()
-                if byte == b'\xcd' and len(line) == 0:
+                if byte == cns.HEADER_BYTE_2 and len(line) == 0:
                     1 == 1
 
                 elif byte == cns.HEADER_BYTE_1 and last == cns.HEADER_BYTE_2 and len(line) == 0:
@@ -141,8 +147,10 @@ class Communication:
         video_status = int.from_bytes(video_status, "little", signed=False)
         weather_forecast = line[84]
         weather_forecast = int.from_bytes(weather_forecast, "little", signed=False)
-        # finish = line[85:87]
-        # crc = line[87]
+        # humidity = humidity[85]+lihumidityne[86]+humidity[87]+humidity[88]
+        # [humidity] = struct.unpack("f", humidity)
+        # finish = line[89:91]
+        # crc = line[91]
 
         row = []
         row.append(takim_no)
@@ -173,11 +181,13 @@ class Communication:
 
         print(row)
         # update csv
-        with open(self.widget.session_directory + "/Telemetry.csv", 'a', newline='') as file:
+        with open(self.widget.session_directory + cns.TELEMETRY_FILE_NAME, 'a', newline='') as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerow(row)
+            
         # update telemetry table
         self.widget.addRow(row)
+
         # update graphs
         self.widget.graphs.update_pl(latitude_pl, longitude_pl, altitude_pl)
         self.widget.graphs.update_car(latitude_car, longitude_car, altitude_car)
@@ -186,12 +196,20 @@ class Communication:
 
         # update status, pitch-roll-yaw, height diff and video status
         self.widget.setStatus(status)
-        self.widget.transform.RotateX(pitch)
-        self.widget.transform.RotateY(roll)
-        self.widget.transform.RotateZ(yaw)
+        self.widget.transform.RotateX(pitch - self.last_pitch)
+        self.widget.transform.RotateY(roll - self.last_roll)
+        self.widget.transform.RotateZ(yaw - self.last_yaw)
         self.widget.vtkWidget.update()
         self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
+        self.last_pitch = pitch
+        self.last_roll = roll
+        self.last_yaw = yaw
 
         # self.widget.updateMap(float("{:.4f}".format(latitude_pl)), float("{:.4f}".format(longitude_pl)))
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setVideoStatus(status)
+
+        # update weather
+        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, 0) 
+        print(predict) # max temp, min temp, nem, yağış miktarı
+

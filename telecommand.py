@@ -69,4 +69,3 @@ class Telecommand:
     def send_engine_stop(self):
 
         self.ser.write(b'\x0A')
-

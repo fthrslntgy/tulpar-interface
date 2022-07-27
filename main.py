@@ -97,6 +97,7 @@ class Widget(Base, Form):
         self.label_status.setAlignment(Qt.AlignCenter)
         self.label_timer.setAlignment(Qt.AlignCenter)
         self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
+        self.spinbox_value.setStyleSheet("background-color: blue;")
 
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
@@ -117,7 +118,7 @@ class Widget(Base, Form):
         self.label_logo.setStyleSheet("background: url(images/logo.jpg)")
 
         # Gyro (model) compontents
-        filename = "model.stl"
+        filename = cns.STL_FILE_NAME
         self.reader = vtk.vtkSTLReader()
         self.reader.SetFileName(filename)
 
@@ -159,7 +160,7 @@ class Widget(Base, Form):
 
         # Map components
         self.vm = QVBoxLayout()
-        coordinates = (39.9211819,32.7983108)
+        coordinates = (cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y)
         self.m = folium.Map(tiles='Stamen Terrain', zoom_start=14, location=coordinates)
         data = io.BytesIO()
         self.m.save(data, close_file=False)
@@ -167,7 +168,7 @@ class Widget(Base, Form):
         self.webView.setHtml(data.getvalue().decode())
         self.vm.addWidget(self.webView)
         self.frame_map.setLayout(self.vm)
-        self.updateMap(39.9211819,32.7983108)
+        self.updateMap(cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y)
 
         self.label_height_diff.setAlignment(Qt.AlignCenter)
         self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
@@ -176,7 +177,7 @@ class Widget(Base, Form):
         self.graphs = Graphs(self)
 
         # Camera component
-        self.camurl = "rtsp://10.5.39.149:8554/mjpeg/1"
+        self.camurl = cns.CAMERA_URL
         self.CaptureCamera = CaptureCamera(self.camurl)
         self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
         self.CaptureCamera.start()
@@ -270,9 +271,9 @@ class Widget(Base, Form):
     def sendVideo(self):
 
         file_name = self.lineedit_select_video.text()
-        session = FTP('IP', 'USERNAME', 'PASS') # CHANGE!
+        session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD)
         file = open(file_name, 'rb')
-        session.storbinary('STOR file.mp4', file)
+        session.storbinary(cns.FTP_STORED_FILE_NAME, file)
         file.close()
         session.quit()
 
@@ -337,7 +338,7 @@ class Widget(Base, Form):
             if com.connect():
                 self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
                 os.makedirs(self.session_directory)
-                with open(self.session_directory + "/Telemetry.csv", 'w', newline='') as file:
+                with open(self.session_directory + cns.TELEMETRY_FILE_NAME, 'w', newline='') as file:
                     writer = csv.writer(file, delimiter=',')
                     writer.writerow(cns.TABLE_TITLE)
                 first_connect = False
@@ -356,7 +357,7 @@ class Widget(Base, Form):
                 if com.connect():
                     self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
                     os.makedirs(self.session_directory)
-                    with open(self.session_directory + "/Telemetry.csv", 'w', newline='') as file:
+                    with open(self.session_directory + cns.TELEMETRY_FILE_NAME, 'w', newline='') as file:
                         writer = csv.writer(file, delimiter=',')
                         writer.writerow(cns.TABLE_TITLE)
                     connected = True
