@@ -211,3 +211,4 @@ class Communication:
 
         # update weather
         predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, 0) # max temp, min temp, nem, yağış miktarı
+        self.widget.setWeatherPredict(predict)
