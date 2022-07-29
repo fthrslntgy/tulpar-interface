@@ -84,6 +84,7 @@ class Communication:
 
         takim_no = line[3] + line[4]
         takim_no = int.from_bytes(takim_no, "little", signed=False)
+        takim_no = takim_no * 8
 
         paket_no = line[5] + line[6]
         paket_no = int.from_bytes(paket_no, "little", signed=False)
@@ -210,5 +211,5 @@ class Communication:
         self.widget.setVideoStatus(status)
 
         # update weather
-        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, 0) # max temp, min temp, nem, yağış miktarı
+        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, weather_forecast) # max temp, min temp, nem, yağış miktarı
         self.widget.setWeatherPredict(predict)
