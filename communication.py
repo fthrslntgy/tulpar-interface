@@ -210,6 +210,4 @@ class Communication:
         self.widget.setVideoStatus(status)
 
         # update weather
-        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, 0) 
-        print(predict) # max temp, min temp, nem, yağış miktarı
-
+        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, 0) # max temp, min temp, nem, yağış miktarı
