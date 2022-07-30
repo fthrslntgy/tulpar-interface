@@ -50,6 +50,12 @@ class Widget(Base, Form):
         tele_connected = False
         quit = False
 
+        self.session_directory = output_dir + strftime("/%d%m%Y_%H-%M-%S")
+        os.makedirs(self.session_directory)
+        with open(self.session_directory + cns.TELEMETRY_FILE_NAME, 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow(cns.TABLE_TITLE)
+
         # Main window options
         self.image = None
         self.setWindowIcon(QIcon("images/logo.ico"))
@@ -183,7 +189,7 @@ class Widget(Base, Form):
 
         # Camera component
         self.camurl = cns.CAMERA_URL
-        self.CaptureCamera = CaptureCamera(self.camurl)
+        self.CaptureCamera = CaptureCamera(self.camurl, self.session_directory)
         self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
         self.CaptureCamera.start()
 
@@ -290,6 +296,7 @@ class Widget(Base, Form):
         self.webView.setHtml(data.getvalue().decode())
 
     def ShowCamera(self, frame: QImage) -> None:
+    
         self.label_camera.setPixmap(QPixmap.fromImage(frame))
 
     def addRow(self, list):
@@ -361,11 +368,6 @@ class Widget(Base, Form):
             baud = self.combobox_bauds.currentText()
             com = Communication(port, baud, self)
             if com.connect():
-                self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
-                os.makedirs(self.session_directory)
-                with open(self.session_directory + cns.TELEMETRY_FILE_NAME, 'w', newline='') as file:
-                    writer = csv.writer(file, delimiter=',')
-                    writer.writerow(cns.TABLE_TITLE)
                 first_connect = False
                 connected = True
                 t1 = threading.Thread(target=com.getData)
@@ -380,11 +382,6 @@ class Widget(Base, Form):
                 baud = self.combobox_bauds.currentText()
                 com = Communication(port, baud, self)
                 if com.connect():
-                    self.session_directory = output_dir + strftime("/%Y-%m-%d_%H%M%S")
-                    os.makedirs(self.session_directory)
-                    with open(self.session_directory + cns.TELEMETRY_FILE_NAME, 'w', newline='') as file:
-                        writer = csv.writer(file, delimiter=',')
-                        writer.writerow(cns.TABLE_TITLE)
                     connected = True
                     t1 = threading.Thread(target=com.getData)
                     t1.start()
@@ -421,6 +418,7 @@ class Widget(Base, Form):
         close = QMessageBox.question(self, cns.MAIN_EXIT_TITLE, cns.MAIN_EXIT_MESSAGE, QMessageBox.Yes | QMessageBox.No)
         if close == QMessageBox.Yes:
             quit = True
+            self.vtkWidget.Finalize()
             event.accept()
             self.connection()
         else:

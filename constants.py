@@ -5,8 +5,8 @@ TELEMETRY_PERIOD = 1
 SAT_STATUS_VARS = ("1. Beklemede", "2. Yükselme", "3. Model uydu iniş ", "4. Ayrılma",
                "5. Görev yükü iniş 6", "6. Askıda kalma", "7. Görev yükü iniş 4", "8. Kurtarma")
 
-TELEMETRY_FILE_NAME = "/Telemetry.csv"
-VIDEO_FILE_NAME = "/Video.avi"
+TELEMETRY_FILE_NAME = "/telemetry.csv"
+VIDEO_FILE_NAME = "/video.avi"
 STL_FILE_NAME = "model.stl"
 
 DEFAULT_COORDINATE_X = 39.9211819
