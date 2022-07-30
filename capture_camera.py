@@ -22,7 +22,10 @@ class CaptureCamera(QThread):
     def run(self) -> None:
 
         cap = cv2.VideoCapture(self.url, cv2.CAP_FFMPEG)
-        self.record()
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 400)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 296)
+        cap.set(cv2.CAP_PROP_FPS, 10)
+
         if cap.isOpened():
             while self.__thread_active:
                 if not self.__thread_pause:

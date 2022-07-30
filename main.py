@@ -188,10 +188,19 @@ class Widget(Base, Form):
         self.graphs = Graphs(self)
 
         # Camera component
+        self.camera_started = False
+        self.camera_paused = False
+        self.camera_recorded = False
+        self.button_camera_start.setStyleSheet("background-color: green")
+        self.button_camera_pause.setEnabled(False)
+        self.button_camera_pause.setStyleSheet("background-color: None")
+        self.button_camera_record.setEnabled(False)
+        self.button_camera_record.setStyleSheet("background-color: None")
+
         self.camurl = cns.CAMERA_URL
-        self.CaptureCamera = CaptureCamera(self.camurl, self.session_directory)
-        self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
-        self.CaptureCamera.start()
+        self.button_camera_start.clicked.connect(self.cameraStart)
+        self.button_camera_pause.clicked.connect(self.cameraPause)
+        self.button_camera_record.clicked.connect(self.cameraRecord)
 
         # Telemetry table component
         self.table_telemetry = TelemetryTable(self)
@@ -294,6 +303,64 @@ class Widget(Base, Form):
         data = io.BytesIO()
         self.m.save(data, close_file=False)
         self.webView.setHtml(data.getvalue().decode())
+
+    def cameraStart(self):
+
+        if not self.camera_started:
+            self.CaptureCamera = CaptureCamera(self.camurl, self.session_directory)
+            self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
+            self.CaptureCamera.start()
+            self.camera_started = True
+            self.button_camera_start.setText("STOP")
+            self.button_camera_start.setStyleSheet("background-color: red")
+            self.button_camera_pause.setEnabled(True)
+            self.button_camera_pause.setText("PAUSE")
+            self.button_camera_pause.setStyleSheet("background-color: red")
+            self.button_camera_record.setEnabled(True)
+            self.button_camera_record.setText("RECORD")
+            self.button_camera_record.setStyleSheet("background-color: green")
+
+        else:
+            self.CaptureCamera.stop()
+            self.camera_started = False
+            self.camera_paused = False
+            self.camera_recorded = False
+            self.button_camera_start.setText("START")
+            self.button_camera_start.setStyleSheet("background-color: green")
+            self.button_camera_pause.setEnabled(False)
+            self.button_camera_pause.setText("PAUSE")
+            self.button_camera_pause.setStyleSheet("background-color: None")
+            self.button_camera_record.setEnabled(False)
+            self.button_camera_record.setText("RECORD")
+            self.button_camera_record.setStyleSheet("background-color: None")
+
+    def cameraPause(self):
+
+        if not self.camera_paused:
+            self.camera_paused = True
+            self.CaptureCamera.pause()
+            self.button_camera_pause.setText("UNPAUSE")
+            self.button_camera_pause.setStyleSheet("background-color: green")
+
+        else:
+            self.camera_paused = False
+            self.CaptureCamera.unpause()
+            self.button_camera_pause.setText("PAUSE")
+            self.button_camera_pause.setStyleSheet("background-color: red")
+
+    def cameraRecord(self):
+
+        if not self.camera_recorded:
+            self.camera_recorded = True
+            self.CaptureCamera.record()
+            self.button_camera_record.setText("UNRECORD")
+            self.button_camera_record.setStyleSheet("background-color: red")
+
+        else:
+            self.camera_recorded = False
+            self.CaptureCamera.unrecord()
+            self.button_camera_record.setText("RECORD")
+            self.button_camera_record.setStyleSheet("background-color: green")
 
     def ShowCamera(self, frame: QImage) -> None:
     

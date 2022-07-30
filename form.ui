@@ -538,7 +538,7 @@
     <rect>
      <x>10</x>
      <y>310</y>
-     <width>521</width>
+     <width>441</width>
      <height>331</height>
     </rect>
    </property>
@@ -589,6 +589,45 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_camera_pause">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>460</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PAUSE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_camera_start">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>400</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>START</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_camera_record">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>520</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>RECORD</string>
    </property>
   </widget>
  </widget>
