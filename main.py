@@ -1,11 +1,8 @@
-# This Python file uses the following encoding: utf-8
 import os
-import io
 import serial.tools.list_ports
 import threading
 import csv
 import time
-import folium
 from time import strftime
 from ftplib import FTP
 from pathlib import Path
@@ -17,16 +14,14 @@ from PySide2.QtWidgets import QApplication, QTableWidgetItem, QAbstractItemView,
 from PySide2.QtCore import QFile, QRect
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtGui import QIcon, QPalette, QColor, Qt, QPixmap, QImage
-from PySide2.QtWebEngineWidgets import QWebEngineView
 from PySide2.QtUiTools import loadUiType
-from PySide2 import QtCore
 
 from communication import Communication
 from telemetry_table import TelemetryTable
 from graphs import Graphs
 from telecommand import Telecommand
 from capture_camera import CaptureCamera
-# from model import Model
+from map import Map
 import constants as cns
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +35,7 @@ if not os.path.exists(output_dir):
 class Widget(Base, Form):
 
     def __init__(self, parent=None):
+
         super(self.__class__, self).__init__(parent)
         self.setupUi(self)
 
@@ -61,7 +57,7 @@ class Widget(Base, Form):
         self.setWindowIcon(QIcon("images/logo.ico"))
         self.setWindowTitle(cns.MAIN_TITLE)
         self.setFixedSize(cns.MAIN_WIDTH, cns.MAIN_HEIGHT)
-        self.setWindowOpacity(cns.MAIN_OPACITY)
+        # self.setWindowOpacity(cns.MAIN_OPACITY)
 
         # Palette options
         dark_palette = QPalette()
@@ -85,6 +81,12 @@ class Widget(Base, Form):
         dark_palette.setColor(QPalette.Disabled, QPalette.Light, QColor(53, 53, 53))
         self.setPalette(dark_palette)
 
+        # Telemetry table component
+        self.table_telemetry = TelemetryTable(self)
+        self.table_telemetry.setStyleSheet("background-color: white")
+        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
+
         # Port, baud and connection components
         ports = serial.tools.list_ports.comports()
         for element in ports:
@@ -97,7 +99,7 @@ class Widget(Base, Form):
         self.telecommand = Telecommand(self)
         self.button_connection.setStyleSheet("background-color: green")
         self.button_connection.clicked.connect(self.connection)
-        self.button_connection_tele.clicked.connect(self.tele_connection)
+        self.button_connection_tele.clicked.connect(self.teleConnection)
 
         # Status and telecommand components
         self.label_status.setAlignment(Qt.AlignCenter)
@@ -107,11 +109,11 @@ class Widget(Base, Form):
     
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
-        self.button_send_command.clicked.connect(lambda: self.telecommand.send_telecommand(self.combobox_command.currentText()))
-        self.button_servo_open.clicked.connect(self.telecommand.send_servo_open)
-        self.button_servo_close.clicked.connect(self.telecommand.send_servo_close)
-        self.button_engine_run.clicked.connect(lambda: self.telecommand.send_engine_run(self.spinbox_value.value()))
-        self.button_engine_stop.clicked.connect(self.telecommand.send_engine_stop)
+        self.button_send_command.clicked.connect(lambda: self.telecommand.sendTelecommand(self.combobox_command.currentText()))
+        self.button_servo_open.clicked.connect(self.telecommand.sendServoOpen)
+        self.button_servo_close.clicked.connect(self.telecommand.sendServoClose)
+        self.button_engine_run.clicked.connect(lambda: self.telecommand.sendEngineRun(self.spinbox_value.value()))
+        self.button_engine_stop.clicked.connect(self.telecommand.sendEngineStop)
 
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
@@ -170,22 +172,14 @@ class Widget(Base, Form):
         self.label_gyro.setStyleSheet("background-color: darkred; font-size: 8pt; font-weight: bold; color: white")
 
         # Map components
-        self.vm = QVBoxLayout()
-        coordinates = (cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y)
-        self.m = folium.Map(tiles='Stamen Terrain', zoom_start=14, location=coordinates)
-        data = io.BytesIO()
-        self.m.save(data, close_file=False)
-        self.webView = QWebEngineView()
-        self.webView.setHtml(data.getvalue().decode())
-        self.vm.addWidget(self.webView)
-        self.frame_map.setLayout(self.vm)
-        self.updateMap(cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y)
+        self.map = Map(self)
+        self.updateLatLon(cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y, cns.DEFAULT_COORDINATE_X + 0.01, cns.DEFAULT_COORDINATE_Y + 0.01)
+        self.updateMap()
+        self.table_telemetry.setMouseTracking(True)
+        self.table_telemetry.mouseMoveEvent = self.updateMap
 
         self.label_height_diff.setAlignment(Qt.AlignCenter)
         self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
-
-        # Graph components
-        self.graphs = Graphs(self)
 
         # Camera component
         self.camera_started = False
@@ -202,16 +196,13 @@ class Widget(Base, Form):
         self.button_camera_pause.clicked.connect(self.cameraPause)
         self.button_camera_record.clicked.connect(self.cameraRecord)
 
-        # Telemetry table component
-        self.table_telemetry = TelemetryTable(self)
-        self.table_telemetry.setStyleSheet("background-color: white")
-        self.table_telemetry.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.table_telemetry.setGeometry(QRect(cns.TABLE_X, cns.TABLE_Y, cns.TABLE_WIDTH, cns.TABLE_HEIGHT))
-
+        # Graph components
+        self.graphs = Graphs(self)
+        
         # Update buttons
-        self.update_buttons()
+        self.updateButtons()
 
-    def update_buttons(self):
+    def updateButtons(self):
 
         global connected, tele_connected
 
@@ -297,12 +288,20 @@ class Widget(Base, Form):
         file.close()
         session.quit()
 
-    def updateMap(self, lat, lon):
+    def updateMap(self, action=None):
 
-        folium.Marker([lat, lon]).add_to(self.m)
-        data = io.BytesIO()
-        self.m.save(data, close_file=False)
-        self.webView.setHtml(data.getvalue().decode())
+        self.map.update(self.pl_lat, self.pl_lon, self.car_lat, self.car_lon)
+
+    def updateLatLon(self, pl_lat, pl_lon, car_lat, car_lon):
+
+        self.pl_lat = pl_lat
+        self.pl_lon = pl_lon
+        self.car_lat = car_lat
+        self.car_lon = car_lon
+    
+    def ShowCamera(self, frame: QImage) -> None:
+    
+        self.label_camera.setPixmap(QPixmap.fromImage(frame))
 
     def cameraStart(self):
 
@@ -362,10 +361,6 @@ class Widget(Base, Form):
             self.button_camera_record.setText("RECORD")
             self.button_camera_record.setStyleSheet("background-color: green")
 
-    def ShowCamera(self, frame: QImage) -> None:
-    
-        self.label_camera.setPixmap(QPixmap.fromImage(frame))
-
     def addRow(self, list):
 
         numRows = self.table_telemetry.rowCount() - 1
@@ -420,11 +415,11 @@ class Widget(Base, Form):
 
     def connection(self):
 
-        global com, first_connect, connected, tele_connected, quit
+        global com, first_connect, connected, tele_connected, suit
 
         if quit and connected:
             if tele_connected:
-                self.tele_connection()
+                self.teleConnection()
             com.disconnect()
 
         elif quit:
@@ -457,13 +452,13 @@ class Widget(Base, Form):
 
             else:
                 if tele_connected:
-                    self.tele_connection()
+                    self.teleConnection()
                 com.disconnect()
                 connected = False
 
-        self.update_buttons()
+        self.updateButtons()
 
-    def tele_connection(self):
+    def teleConnection(self):
 
         global tele_connected
 
@@ -477,7 +472,7 @@ class Widget(Base, Form):
             self.telecommand.connect(port, baud)
             tele_connected = True
 
-        self.update_buttons()
+        self.updateButtons()
 
     def closeEvent(self, event):
 
@@ -492,24 +487,9 @@ class Widget(Base, Form):
             quit = False
             event.ignore()
 
-    def load_ui(self):
 
-        loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / cns.UI_FILE)
-        ui_file = QFile(path)
-        ui_file.open(QFile.ReadOnly)
-        loader.load(ui_file, self)
-        ui_file.close()
-
-
-def main():
-
+if __name__ == "__main__":
     app = QApplication([])
     widget = Widget()
     widget.show()
     app.exec_()
-
-
-if __name__ == "__main__":
-
-    main()

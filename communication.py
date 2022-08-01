@@ -193,7 +193,7 @@ class Communication:
         self.widget.graphs.update_pl_hei(pressure_pl, height_pl, pressure_car, height_car)
         self.widget.graphs.update_sp_tmp_v(speed, tempe, b_voltage)
 
-        # update status, pitch-roll-yaw, height diff and video status
+        # update status, pitch-roll-yaw, height diff
         self.widget.setStatus(status)
         self.widget.transform.RotateX(pitch - self.last_pitch)
         self.widget.transform.RotateY(roll - self.last_roll)
@@ -204,7 +204,8 @@ class Communication:
         self.last_roll = roll
         self.last_yaw = yaw
 
-        # self.widget.updateMap(float("{:.4f}".format(latitude_pl)), float("{:.4f}".format(longitude_pl)))
+        # update map and video status
+        self.widget.updateLatLon(latitude_pl, longitude_pl, latitude_car, longitude_car)
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setVideoStatus(status)
 

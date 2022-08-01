@@ -30,7 +30,7 @@ class Telecommand:
             self.ser.close()
             print("TELE Disconnected : ", self.portName)
 
-    def send_telecommand(self, telecommand):
+    def sendTelecommand(self, telecommand):
 
         index = telecommand.index(".")
         selected = int(telecommand[0:index])
@@ -52,20 +52,20 @@ class Telecommand:
         elif selected == 8:
             self.ser.write(b'\x07')
 
-    def send_servo_open(self):
+    def sendServoOpen(self):
 
         self.ser.write(b'\x08')
 
-    def send_servo_close(self):
+    def sendServoClose(self):
 
         self.ser.write(b'\x09')
 
-    def send_engine_run(self, throttle):
+    def sendEngineRun(self, throttle):
 
         value = throttle + 128
         byte = bytes([value])
         self.ser.write(byte)
 
-    def send_engine_stop(self):
+    def sendEngineStop(self):
 
         self.ser.write(b'\x0A')
