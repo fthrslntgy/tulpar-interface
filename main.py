@@ -1,5 +1,6 @@
 import os
 import serial.tools.list_ports
+import socket
 import threading
 import csv
 import time
@@ -211,9 +212,7 @@ class Widget(Base, Form):
             self.button_connection.setText(cns.MAIN_DISCONNECT)
             self.label_status.setStyleSheet("background-color: green; font-size: 12pt; font-weight: bold;")
             self.label_status.setText("CONNECTED")
-            self.button_select_video.setEnabled(True)
             self.button_connection_tele.setEnabled(True)
-            self.button_send_video.setEnabled(True)
 
             if tele_connected:
                 self.button_connection_tele.setStyleSheet("background-color: red")
@@ -241,8 +240,6 @@ class Widget(Base, Form):
             self.label_status.setStyleSheet("background-color: red; font-size: 12pt; font-weight: bold;")
             self.label_status.setText("UNCONNECTED")
             self.label_timer.setText("UPTIME 00 : 00")
-            self.button_select_video.setEnabled(False)
-            self.button_send_video.setEnabled(False)
 
             self.button_connection_tele.setEnabled(False)
             self.button_connection_tele.setStyleSheet("background-color: None")
@@ -282,11 +279,15 @@ class Widget(Base, Form):
     def sendVideo(self):
 
         file_name = self.lineedit_select_video.text()
-        session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD)
-        file = open(file_name, 'rb')
-        session.storbinary(cns.FTP_STORED_FILE_NAME, file)
-        file.close()
-        session.quit()
+        try:
+            session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD, timeout=3)
+        except socket.timeout as e: 
+            raise(e)
+        else:  
+            file = open(file_name, 'rb')
+            session.storbinary(cns.FTP_STORED_FILE_NAME, file)
+            file.close()
+            session.quit()
 
     def updateMap(self, action=None):
 
