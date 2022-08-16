@@ -279,8 +279,13 @@ class Widget(Base, Form):
     def sendVideo(self):
 
         file_name = self.lineedit_select_video.text()
+        tFtp = threading.Thread(target=self.fileTransferFTP, args=[file_name])
+        tFtp.start()
+    
+    def fileTransferFTP(self, file_name):
+
         try:
-            session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD, timeout=3)
+            session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD, timeout=cns.FTP_TIMEOUT)
         except socket.timeout as e: 
             raise(e)
         else:  
@@ -288,6 +293,7 @@ class Widget(Base, Form):
             session.storbinary(cns.FTP_STORED_FILE_NAME, file)
             file.close()
             session.quit()
+            print("File sent succesfully!")
 
     def updateMap(self, action=None):
 
