@@ -55,7 +55,7 @@ class CaptureCamera(QThread):
         self.__thread_pause = False
 
     def record(self) -> None:
-        self.out = cv2.VideoWriter(self.directory + strftime("/%H-%M-%S") + "_video.avi", cv2.VideoWriter_fourcc(*'DIVX'), 10, (400, 296))
+        self.out = cv2.VideoWriter(self.directory + strftime("/%H-%M-%S_%s", cns.VIDEO_FILE_NAME) + cv2.VideoWriter_fourcc(*'DIVX'), 10, (400, 296))
         self.record_stat = True
     
     def unrecord(self) -> None:

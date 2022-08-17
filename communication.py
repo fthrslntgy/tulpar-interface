@@ -184,7 +184,7 @@ class Communication:
         # update csv and telemetry table
         with open(self.widget.session_directory + cns.TELEMETRY_FILE_NAME, 'a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerows(row)
+            writer.writerow(row)
         self.widget.addRow(row)
 
         # update graphs
@@ -211,6 +211,6 @@ class Communication:
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setVideoStatus(status)
 
-        # update weather (max temp, min temp, nem, yağış miktarı)
+        # update weather (max temp, min temp, humidity, rain)
         predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, weather_forecast)
         self.widget.setWeatherPredict(predict)
