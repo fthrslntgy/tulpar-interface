@@ -183,8 +183,8 @@ class Communication:
         
         # update csv and telemetry table
         with open(self.widget.session_directory + cns.TELEMETRY_FILE_NAME, 'a', newline='') as file:
-            writer = csv.writer(file, delimiter=',')
-            writer.writerow(row)
+            writer = csv.writer(file)
+            writer.writerows(row)
         self.widget.addRow(row)
 
         # update graphs
