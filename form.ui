@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1286</width>
+    <width>1656</width>
     <height>859</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
     <rect>
      <x>0</x>
      <y>90</y>
-     <width>1281</width>
+     <width>1651</width>
      <height>20</height>
     </rect>
    </property>
@@ -41,7 +41,7 @@
   <widget class="QComboBox" name="combobox_ports">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>390</x>
      <y>10</y>
      <width>131</width>
      <height>24</height>
@@ -51,7 +51,7 @@
   <widget class="QComboBox" name="combobox_bauds">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>390</x>
      <y>40</y>
      <width>131</width>
      <height>24</height>
@@ -61,7 +61,7 @@
   <widget class="QPushButton" name="button_connection">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>390</x>
      <y>70</y>
      <width>71</width>
      <height>24</height>
@@ -74,7 +74,7 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>540</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -89,7 +89,7 @@
     <rect>
      <x>0</x>
      <y>-10</y>
-     <width>1281</width>
+     <width>1661</width>
      <height>20</height>
     </rect>
    </property>
@@ -100,9 +100,9 @@
   <widget class="Line" name="line_4">
    <property name="geometry">
     <rect>
-     <x>-10</x>
+     <x>0</x>
      <y>840</y>
-     <width>1291</width>
+     <width>1661</width>
      <height>20</height>
     </rect>
    </property>
@@ -113,7 +113,7 @@
   <widget class="Line" name="line_5">
    <property name="geometry">
     <rect>
-     <x>-10</x>
+     <x>-5</x>
      <y>0</y>
      <width>20</width>
      <height>851</height>
@@ -126,10 +126,10 @@
   <widget class="Line" name="line_6">
    <property name="geometry">
     <rect>
-     <x>1270</x>
-     <y>0</y>
+     <x>1640</x>
+     <y>-10</y>
      <width>20</width>
-     <height>851</height>
+     <height>861</height>
     </rect>
    </property>
    <property name="orientation">
@@ -139,7 +139,7 @@
   <widget class="QPushButton" name="button_servo_open">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>870</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
@@ -152,7 +152,7 @@
   <widget class="QPushButton" name="button_servo_close">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>870</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -165,7 +165,7 @@
   <widget class="QPushButton" name="button_send_command">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>750</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -178,7 +178,7 @@
   <widget class="QPushButton" name="button_engine_stop">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>990</x>
      <y>70</y>
      <width>111</width>
      <height>24</height>
@@ -191,19 +191,19 @@
   <widget class="QComboBox" name="combobox_command">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>750</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_logo">
+  <widget class="QLabel" name="label_logo_tulpar">
    <property name="geometry">
     <rect>
-     <x>1120</x>
+     <x>1560</x>
      <y>10</y>
-     <width>151</width>
+     <width>81</width>
      <height>81</height>
     </rect>
    </property>
@@ -214,7 +214,7 @@
   <widget class="QPushButton" name="button_engine_run">
    <property name="geometry">
     <rect>
-     <x>580</x>
+     <x>990</x>
      <y>40</y>
      <width>111</width>
      <height>24</height>
@@ -224,23 +224,10 @@
     <string>MOTOR TAHRİK</string>
    </property>
   </widget>
-  <widget class="Line" name="line_7">
-   <property name="geometry">
-    <rect>
-     <x>690</x>
-     <y>0</y>
-     <width>20</width>
-     <height>101</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
-   </property>
-  </widget>
   <widget class="Line" name="line_8">
    <property name="geometry">
     <rect>
-     <x>320</x>
+     <x>730</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -253,7 +240,7 @@
   <widget class="QLabel" name="label_run_value">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>750</x>
      <y>10</y>
      <width>291</width>
      <height>31</height>
@@ -266,7 +253,7 @@
   <widget class="QSpinBox" name="spinbox_value">
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>1020</x>
      <y>10</y>
      <width>81</width>
      <height>24</height>
@@ -279,7 +266,7 @@
   <widget class="QPushButton" name="button_refresh">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>520</x>
      <y>10</y>
      <width>21</width>
      <height>24</height>
@@ -292,7 +279,7 @@
   <widget class="QPushButton" name="button_connection_tele">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>470</x>
      <y>70</y>
      <width>71</width>
      <height>24</height>
@@ -325,7 +312,7 @@
   <widget class="Line" name="line_9">
    <property name="geometry">
     <rect>
-     <x>1100</x>
+     <x>1400</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -343,12 +330,12 @@
     <rect>
      <x>10</x>
      <y>650</y>
-     <width>1261</width>
+     <width>1631</width>
      <height>192</height>
     </rect>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graph_pr_hei">
+  <widget class="QGraphicsView" name="graph_pressure">
    <property name="geometry">
     <rect>
      <x>540</x>
@@ -361,8 +348,8 @@
   <widget class="QGraphicsView" name="graph_sp_tmp_v">
    <property name="geometry">
     <rect>
-     <x>910</x>
-     <y>380</y>
+     <x>1280</x>
+     <y>110</y>
      <width>361</width>
      <height>261</height>
     </rect>
@@ -373,7 +360,7 @@
     <rect>
      <x>10</x>
      <y>290</y>
-     <width>261</width>
+     <width>251</width>
      <height>16</height>
     </rect>
    </property>
@@ -387,7 +374,7 @@
   <widget class="QLabel" name="label_height_diff">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>270</x>
      <y>290</y>
      <width>251</width>
      <height>16</height>
@@ -403,9 +390,9 @@
   <widget class="QLabel" name="label_status">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>560</x>
      <y>10</y>
-     <width>141</width>
+     <width>171</width>
      <height>61</height>
     </rect>
    </property>
@@ -416,7 +403,7 @@
   <widget class="QPushButton" name="button_select_video">
    <property name="geometry">
     <rect>
-     <x>940</x>
+     <x>1370</x>
      <y>30</y>
      <width>31</width>
      <height>21</height>
@@ -429,9 +416,9 @@
   <widget class="QLabel" name="label_video_status">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1120</x>
      <y>60</y>
-     <width>161</width>
+     <width>181</width>
      <height>31</height>
     </rect>
    </property>
@@ -445,9 +432,9 @@
   <widget class="QLabel" name="label_video_upload">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1120</x>
      <y>0</y>
-     <width>261</width>
+     <width>281</width>
      <height>21</height>
     </rect>
    </property>
@@ -458,7 +445,7 @@
   <widget class="QLabel" name="label_select_video">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1120</x>
      <y>30</y>
      <width>81</width>
      <height>21</height>
@@ -471,9 +458,9 @@
   <widget class="QLineEdit" name="lineedit_select_video">
    <property name="geometry">
     <rect>
-     <x>800</x>
+     <x>1210</x>
      <y>30</y>
-     <width>131</width>
+     <width>151</width>
      <height>20</height>
     </rect>
    </property>
@@ -484,7 +471,7 @@
   <widget class="Line" name="line_10">
    <property name="geometry">
     <rect>
-     <x>970</x>
+     <x>1100</x>
      <y>0</y>
      <width>20</width>
      <height>101</height>
@@ -497,7 +484,7 @@
   <widget class="QPushButton" name="button_send_video">
    <property name="geometry">
     <rect>
-     <x>880</x>
+     <x>1310</x>
      <y>60</y>
      <width>91</width>
      <height>31</height>
@@ -510,9 +497,9 @@
   <widget class="QLabel" name="label_weather">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>1410</x>
      <y>0</y>
-     <width>131</width>
+     <width>141</width>
      <height>21</height>
     </rect>
    </property>
@@ -523,9 +510,9 @@
   <widget class="QLabel" name="label_timer">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>75</y>
-     <width>141</width>
+     <x>560</x>
+     <y>70</y>
+     <width>171</width>
      <height>21</height>
     </rect>
    </property>
@@ -536,10 +523,10 @@
   <widget class="QLabel" name="label_camera">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>310</y>
+     <x>20</x>
+     <y>320</y>
      <width>441</width>
-     <height>331</height>
+     <height>321</height>
     </rect>
    </property>
    <property name="text">
@@ -551,7 +538,7 @@
     <rect>
      <x>10</x>
      <y>110</y>
-     <width>261</width>
+     <width>251</width>
      <height>171</height>
     </rect>
    </property>
@@ -565,7 +552,7 @@
   <widget class="QFrame" name="frame_map">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>270</x>
      <y>110</y>
      <width>251</width>
      <height>171</height>
@@ -581,9 +568,9 @@
   <widget class="QLabel" name="label_weather_predict">
    <property name="geometry">
     <rect>
-     <x>990</x>
+     <x>1420</x>
      <y>20</y>
-     <width>111</width>
+     <width>121</width>
      <height>71</height>
     </rect>
    </property>
@@ -594,7 +581,7 @@
   <widget class="QPushButton" name="button_camera_pause">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>450</x>
      <y>460</y>
      <width>71</width>
      <height>31</height>
@@ -607,7 +594,7 @@
   <widget class="QPushButton" name="button_camera_start">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>450</x>
      <y>400</y>
      <width>71</width>
      <height>31</height>
@@ -620,7 +607,7 @@
   <widget class="QPushButton" name="button_camera_record">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>450</x>
      <y>520</y>
      <width>71</width>
      <height>31</height>
@@ -628,6 +615,91 @@
    </property>
    <property name="text">
     <string>RECORD</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_height">
+   <property name="geometry">
+    <rect>
+     <x>910</x>
+     <y>380</y>
+     <width>361</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graph_altitude">
+   <property name="geometry">
+    <rect>
+     <x>1280</x>
+     <y>380</y>
+     <width>361</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="Line" name="line_11">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>100</y>
+     <width>20</width>
+     <height>551</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_12">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>310</y>
+     <width>531</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_13">
+   <property name="geometry">
+    <rect>
+     <x>1540</x>
+     <y>0</y>
+     <width>20</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_logo_etu">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>351</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="Line" name="line_7">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>0</y>
+     <width>20</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
    </property>
   </widget>
  </widget>

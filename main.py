@@ -62,7 +62,7 @@ class Widget(Base, Form):
 
         # Palette options
         dark_palette = QPalette()
-        dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        dark_palette.setColor(QPalette.Window, QColor(135, 105, 255))
         dark_palette.setColor(QPalette.WindowText, Qt.white)
         dark_palette.setColor(QPalette.Base, QColor(35, 35, 35))
         dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
@@ -94,6 +94,8 @@ class Widget(Base, Form):
             self.combobox_ports.addItem(str(element).split()[0])
         for element in cns.MAIN_BAUDS:
             self.combobox_bauds.addItem(element)
+        self.combobox_ports.setStyleSheet("color: black;")
+        self.combobox_bauds.setStyleSheet("color: black;")
         self.button_refresh.setIcon(QIcon("images/refresh.png"))
         self.button_refresh.clicked.connect(self.refreshPorts)
 
@@ -106,8 +108,15 @@ class Widget(Base, Form):
         self.label_status.setAlignment(Qt.AlignCenter)
         self.label_timer.setAlignment(Qt.AlignCenter)
         self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
-        self.spinbox_value.setStyleSheet("background-color: black;")
-    
+        self.spinbox_value.setStyleSheet("background-color: white; color: black;")
+
+        self.button_send_command.setStyleSheet("color: black;")
+        self.button_servo_open.setStyleSheet("color: black;")
+        self.button_servo_close.setStyleSheet("color: black;")
+        self.button_engine_run.setStyleSheet("color: black;")
+        self.button_engine_stop.setStyleSheet("color: black;")
+        self.combobox_command.setStyleSheet("color: black;")
+
         for element in cns.SAT_STATUS_VARS:
             self.combobox_command.addItem(element)
         self.button_send_command.clicked.connect(lambda: self.telecommand.sendTelecommand(self.combobox_command.currentText()))
@@ -122,6 +131,9 @@ class Widget(Base, Form):
         self.label_video_status.setAlignment(Qt.AlignCenter)
         self.label_video_status.setStyleSheet("background-color: black; font-size: 8pt; font-weight: bold; color: white")
         self.label_video_status.setText("Aktarım Durumu: -")
+        self.lineedit_select_video.setStyleSheet("background-color: white; color: black;")
+        self.button_select_video.setStyleSheet("color: black;")
+        self.button_send_video.setStyleSheet("background-color: green; color: black;")
 
         # Weather component
         self.label_weather_predict.setStyleSheet("background-color: darkred; color: white; font-size: 10px; font-weight: bold;")
@@ -129,7 +141,10 @@ class Widget(Base, Form):
         self.setWeatherPredict([0, 0, 0, 0])
 
         # Logo component
-        self.label_logo.setStyleSheet("background: url(images/logo.jpg)")
+        pixmap_tulpar = QPixmap('images/logo_tulpar.png')
+        self.label_logo_tulpar.setPixmap(pixmap_tulpar)
+        pixmap_etu = QPixmap('images/logo_etu.png')
+        self.label_logo_etu.setPixmap(pixmap_etu)
 
         # Gyro (model) compontents
         filename = cns.STL_FILE_NAME
