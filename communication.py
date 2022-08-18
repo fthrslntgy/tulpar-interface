@@ -195,20 +195,28 @@ class Communication:
         self.widget.graphs.update_height(height_pl, height_car)
         self.widget.graphs.update_altitude(altitude_pl, altitude_car)
 
-        # update status, pitch-roll-yaw, height diff
-        self.widget.setStatus(status)
+        # update pitch-roll-yaw
+        self.widget.transform.Identity()
         self.widget.transform.RotateX(pitch - self.last_pitch)
         self.widget.transform.RotateY(roll - self.last_roll)
         self.widget.transform.RotateZ(yaw - self.last_yaw)
+        self.widget.transformFilter.SetTransform(self.widget.transform)
+        self.widget.transform.Update()
+        self.widget.mapper.StaticOn()
+        self.widget.transformFilter.Update()
+        self.widget.ren.RemoveCuller(self.widget.ren.GetCullers().GetLastItem())
+        self.widget.actor.SetUserTransform(self.widget.transform)
+        self.widget.mapper.SetInputConnection(self.widget.transformFilter.GetOutputPort())
         self.widget.vtkWidget.update()
         self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
         self.last_pitch = pitch
         self.last_roll = roll
         self.last_yaw = yaw
 
-        # update map and video status
+        # update map, height diff, status and video status
         self.widget.updateLatLon(latitude_pl, longitude_pl, latitude_car, longitude_car)
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
+        self.widget.setStatus(status)     
         self.widget.setVideoStatus(status)
 
         # update weather (max temp, min temp, humidity, rain)
