@@ -151,8 +151,8 @@ class Graphs:
         self.pl_hei_data[-1] = pl_hei
         self.car_hei_data[-1] = car_hei
 
-        self.pl_hei_plot.setData(self.pl_pr_data)
-        self.car_hei_plot.setData(self.car_pr_data)
+        self.pl_hei_plot.setData(self.pl_hei_data)
+        self.car_hei_plot.setData(self.car_hei_data)
     
     def update_altitude(self, pl_alt, car_alt):
 
