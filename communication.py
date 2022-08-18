@@ -194,11 +194,11 @@ class Communication:
         # update pitch-roll-yaw
         new_pitch = (pitch/90) * 45
         new_roll = (roll/90) * 45
-        new_yaw = (yaw/90) * 45
+        # new_yaw = (yaw/90) * 45
         self.widget.transform.Identity()
         self.widget.transform.RotateX(new_pitch - 45)
         self.widget.transform.RotateY(new_roll)
-        self.widget.transform.RotateZ(new_yaw)
+        # self.widget.transform.RotateZ(new_yaw)
         self.widget.transformFilter.SetTransform(self.widget.transform)
         self.widget.transform.Update()
         self.widget.mapper.StaticOn()
