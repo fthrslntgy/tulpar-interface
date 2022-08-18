@@ -18,10 +18,6 @@ class Communication:
         self.ser = serial.Serial()
         self.weather = Weather()
 
-        self.last_pitch = 0
-        self.last_roll = 0
-        self.last_yaw = 0
-
     def connect(self):
 
         try:
@@ -196,10 +192,13 @@ class Communication:
         self.widget.graphs.update_altitude(altitude_pl, altitude_car)
 
         # update pitch-roll-yaw
+        new_pitch = (pitch/90) * 45
+        new_roll = (roll/90) * 45
+        new_yaw = (yaw/90) * 45
         self.widget.transform.Identity()
-        self.widget.transform.RotateX(pitch - self.last_pitch)
-        self.widget.transform.RotateY(roll - self.last_roll)
-        self.widget.transform.RotateZ(yaw - self.last_yaw)
+        self.widget.transform.RotateX(new_pitch - 45)
+        self.widget.transform.RotateY(new_roll)
+        self.widget.transform.RotateZ(new_yaw)
         self.widget.transformFilter.SetTransform(self.widget.transform)
         self.widget.transform.Update()
         self.widget.mapper.StaticOn()
@@ -209,9 +208,6 @@ class Communication:
         self.widget.mapper.SetInputConnection(self.widget.transformFilter.GetOutputPort())
         self.widget.vtkWidget.update()
         self.widget.setPRY(float("{:.2f}".format(pitch)), float("{:.2f}".format(roll)), float("{:.2f}".format(yaw)))
-        self.last_pitch = pitch
-        self.last_roll = roll
-        self.last_yaw = yaw
 
         # update map, height diff, status and video status
         self.widget.updateLatLon(latitude_pl, longitude_pl, latitude_car, longitude_car)
