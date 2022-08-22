@@ -4,7 +4,7 @@ import socket
 import threading
 import csv
 import time
-from time import strftime
+from time import sleep, strftime
 from ftplib import FTP
 from pathlib import Path
 
@@ -186,9 +186,7 @@ class Widget(Base, Form):
         # Map components
         self.map = Map(self)
         self.updateLatLon(cns.DEFAULT_COORDINATE_X, cns.DEFAULT_COORDINATE_Y, cns.DEFAULT_COORDINATE_X + 0.01, cns.DEFAULT_COORDINATE_Y + 0.01)
-        self.updateMap()
-        self.table_telemetry.setMouseTracking(True)
-        self.table_telemetry.mouseMoveEvent = self.updateMap
+        self.map.update(self.pl_lat, self.pl_lon, self.car_lat, self.car_lon)
 
         self.label_height_diff.setAlignment(Qt.AlignCenter)
         self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
@@ -268,6 +266,7 @@ class Widget(Base, Form):
         ports = serial.tools.list_ports.comports()
         for element in ports:
             self.combobox_ports.addItem(str(element).split()[0])
+        self.map.update(self.pl_lat, self.pl_lon, self.car_lat, self.car_lon)
 
     def timer(self):
 
@@ -298,17 +297,15 @@ class Widget(Base, Form):
         try:
             session = FTP(cns.FTP_IP, cns.FTP_USERNAME, cns.FTP_PASSWORD, timeout=cns.FTP_TIMEOUT)
         except socket.timeout as e: 
-            raise(e)
+            print("File transfer error! " + str(e))
+            sleep(1)
+            self.fileTransferFTP(file_name)
         else:  
             file = open(file_name, 'rb')
             session.storbinary(cns.FTP_STORED_FILE_NAME, file)
             file.close()
             session.quit()
             print("File sent succesfully!")
-
-    def updateMap(self, action=None):
-
-        self.map.update(self.pl_lat, self.pl_lon, self.car_lat, self.car_lon)
 
     def updateLatLon(self, pl_lat, pl_lon, car_lat, car_lon):
 
