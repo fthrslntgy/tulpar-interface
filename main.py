@@ -192,6 +192,9 @@ class Widget(Base, Form):
         self.label_height_diff.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
 
         # Camera component
+        self.label_camera_text.setStyleSheet("background-color: darkred; font-size: 10pt; font-weight: bold; color: white")
+        self.label_camera_text.setAlignment(Qt.AlignCenter)
+        self.label_camera_text.setText("REALTIME VIDEO CONNECTION: NOT CONNECTED")
         self.camera_started = False
         self.camera_paused = False
         self.camera_recorded = False
@@ -314,15 +317,20 @@ class Widget(Base, Form):
         self.car_lat = car_lat
         self.car_lon = car_lon
     
-    def ShowCamera(self, frame: QImage) -> None:
-    
-        self.label_camera.setPixmap(QPixmap.fromImage(frame))
-
+    def ShowCamera(self, frame, control):
+        
+        if control is False:
+            self.cameraStart()
+            empty_image = QImage()
+            self.label_camera.setPixmap(QPixmap.fromImage(empty_image))
+        else:
+            self.label_camera.setPixmap(QPixmap.fromImage(frame))
+        
     def cameraStart(self):
 
         if not self.camera_started:
             self.CaptureCamera = CaptureCamera(self.camurl, self.session_directory)
-            self.CaptureCamera.ImageUpdated.connect(lambda image: self.ShowCamera(image))
+            self.CaptureCamera.ImageUpdated.connect(lambda image, control: self.ShowCamera(image, control))
             self.CaptureCamera.start()
             self.camera_started = True
             self.button_camera_start.setText("STOP")
@@ -333,6 +341,7 @@ class Widget(Base, Form):
             self.button_camera_record.setEnabled(True)
             self.button_camera_record.setText("RECORD")
             self.button_camera_record.setStyleSheet("background-color: green")
+            self.label_camera_text.setText("REALTIME VIDEO CONNECTION: CONNECTED")
 
         else:
             self.CaptureCamera.stop()
@@ -347,6 +356,7 @@ class Widget(Base, Form):
             self.button_camera_record.setEnabled(False)
             self.button_camera_record.setText("RECORD")
             self.button_camera_record.setStyleSheet("background-color: None")
+            self.label_camera_text.setText("REALTIME VIDEO CONNECTION: NOT CONNECTED")
 
     def cameraPause(self):
 
