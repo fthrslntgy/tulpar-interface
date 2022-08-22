@@ -403,7 +403,7 @@ class Widget(Base, Form):
 
     def setVideoStatus(self, status):
 
-        if status == 0:
+        if status == 1:
             self.label_video_status.setText("Aktarım Durumu: Evet")
         else:
             self.label_video_status.setText("Aktarım Durumu: Hayır")

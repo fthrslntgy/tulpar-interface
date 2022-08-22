@@ -213,7 +213,7 @@ class Communication:
         self.widget.updateLatLon(latitude_pl, longitude_pl, latitude_car, longitude_car)
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setStatus(status)     
-        self.widget.setVideoStatus(status)
+        self.widget.setVideoStatus(video_status)
 
         # update weather (max temp, min temp, humidity, rain)
         predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, weather_forecast)
