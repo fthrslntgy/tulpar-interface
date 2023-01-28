@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>centralwidget</class>
  <widget class="QWidget" name="centralwidget">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -139,8 +142,8 @@
   <widget class="QPushButton" name="button_servo_open">
    <property name="geometry">
     <rect>
-     <x>870</x>
-     <y>40</y>
+     <x>990</x>
+     <y>20</y>
      <width>111</width>
      <height>24</height>
     </rect>
@@ -152,8 +155,8 @@
   <widget class="QPushButton" name="button_servo_close">
    <property name="geometry">
     <rect>
-     <x>870</x>
-     <y>70</y>
+     <x>990</x>
+     <y>50</y>
      <width>111</width>
      <height>24</height>
     </rect>
@@ -166,7 +169,7 @@
    <property name="geometry">
     <rect>
      <x>750</x>
-     <y>70</y>
+     <y>60</y>
      <width>111</width>
      <height>24</height>
     </rect>
@@ -175,25 +178,12 @@
     <string>GÖNDER</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_engine_stop">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>70</y>
-     <width>111</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>MOTOR STOP</string>
-   </property>
-  </widget>
   <widget class="QComboBox" name="combobox_command">
    <property name="geometry">
     <rect>
      <x>750</x>
-     <y>40</y>
-     <width>111</width>
+     <y>10</y>
+     <width>231</width>
      <height>24</height>
     </rect>
    </property>
@@ -211,19 +201,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="button_engine_run">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>40</y>
-     <width>111</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>MOTOR TAHRİK</string>
-   </property>
-  </widget>
   <widget class="Line" name="line_8">
    <property name="geometry">
     <rect>
@@ -235,32 +212,6 @@
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_run_value">
-   <property name="geometry">
-    <rect>
-     <x>750</x>
-     <y>10</y>
-     <width>291</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manuel motor tahrik komutu için değer:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="spinbox_value">
-   <property name="geometry">
-    <rect>
-     <x>1020</x>
-     <y>10</y>
-     <width>81</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="maximum">
-    <number>127</number>
    </property>
   </widget>
   <widget class="QPushButton" name="button_refresh">
@@ -529,6 +480,9 @@
      <height>171</height>
     </rect>
    </property>
+   <property name="cursor">
+    <cursorShape>SizeAllCursor</cursorShape>
+   </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
    </property>
@@ -544,6 +498,12 @@
      <width>251</width>
      <height>171</height>
     </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -690,6 +650,87 @@
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700; color:#ffffff;&quot;&gt;REALTIME VIDEO CONNECTION&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_caliber">
+   <property name="geometry">
+    <rect>
+     <x>870</x>
+     <y>60</y>
+     <width>111</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>KALİBRE ET</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_alarms">
+   <property name="geometry">
+    <rect>
+     <x>1430</x>
+     <y>10</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(148, 0, 0);</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600; color:#ffffff;&quot;&gt;Alarmlar&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_alarm1">
+   <property name="geometry">
+    <rect>
+     <x>1520</x>
+     <y>40</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_alarm2">
+   <property name="geometry">
+    <rect>
+     <x>1520</x>
+     <y>60</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_alarm1">
+   <property name="geometry">
+    <rect>
+     <x>1420</x>
+     <y>40</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Alarm 1:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_alarm2">
+   <property name="geometry">
+    <rect>
+     <x>1420</x>
+     <y>60</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Alarm 2:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

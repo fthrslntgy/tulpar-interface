@@ -108,13 +108,11 @@ class Widget(Base, Form):
         self.label_status.setAlignment(Qt.AlignCenter)
         self.label_timer.setAlignment(Qt.AlignCenter)
         self.label_timer.setStyleSheet("background-color: black; color: red; font-size: 14px;font-weight: bold;")
-        self.spinbox_value.setStyleSheet("background-color: white; color: black;")
 
         self.button_send_command.setStyleSheet("color: black;")
         self.button_servo_open.setStyleSheet("color: black;")
         self.button_servo_close.setStyleSheet("color: black;")
-        self.button_engine_run.setStyleSheet("color: black;")
-        self.button_engine_stop.setStyleSheet("color: black;")
+        self.button_caliber.setStyleSheet("color: black;")
         self.combobox_command.setStyleSheet("color: black;")
 
         for element in cns.SAT_STATUS_VARS:
@@ -122,8 +120,6 @@ class Widget(Base, Form):
         self.button_send_command.clicked.connect(lambda: self.telecommand.sendTelecommand(self.combobox_command.currentText()))
         self.button_servo_open.clicked.connect(self.telecommand.sendServoOpen)
         self.button_servo_close.clicked.connect(self.telecommand.sendServoClose)
-        self.button_engine_run.clicked.connect(lambda: self.telecommand.sendEngineRun(self.spinbox_value.value()))
-        self.button_engine_stop.clicked.connect(self.telecommand.sendEngineStop)
 
         # Video send components
         self.button_select_video.clicked.connect(self.uploadVideo)
@@ -134,6 +130,14 @@ class Widget(Base, Form):
         self.lineedit_select_video.setStyleSheet("background-color: white; color: black;")
         self.button_select_video.setStyleSheet("color: black;")
         self.button_send_video.setStyleSheet("background-color: green; color: black;")
+
+        ## Alarm components
+        # self.button_alarm1.setIcon(QIcon("images/alarm_ok.png"))
+        self.button_alarm1.setStyleSheet("background-color: green;")
+        # self.button_alarm2.setIcon(QIcon("images/alarm_warning.png"))
+        self.button_alarm2.setStyleSheet("background-color: red;")
+        self.button_alarm1.setEnabled(False)
+        self.button_alarm2.setEnabled(False)
 
         # Logo component
         pixmap_tulpar = QPixmap('images/logo_tulpar.png')
@@ -223,23 +227,19 @@ class Widget(Base, Form):
 
             if tele_connected:
                 self.button_connection_tele.setStyleSheet("background-color: red")
-                self.spinbox_value.setEnabled(True)
                 self.combobox_command.setEnabled(True)
                 self.button_send_command.setEnabled(True)
                 self.button_servo_open.setEnabled(True)
                 self.button_servo_close.setEnabled(True)
-                self.button_engine_run.setEnabled(True)
-                self.button_engine_stop.setEnabled(True)
+                self.button_caliber.setEnabled(True)
 
             else:
                 self.button_connection_tele.setStyleSheet("background-color: green")
-                self.spinbox_value.setEnabled(False)
                 self.combobox_command.setEnabled(False)
                 self.button_send_command.setEnabled(False)
                 self.button_servo_open.setEnabled(False)
                 self.button_servo_close.setEnabled(False)
-                self.button_engine_run.setEnabled(False)
-                self.button_engine_stop.setEnabled(False)
+                self.button_caliber.setEnabled(False)
 
         else:
             self.button_connection.setStyleSheet("background-color: green")
@@ -250,13 +250,11 @@ class Widget(Base, Form):
 
             self.button_connection_tele.setEnabled(False)
             self.button_connection_tele.setStyleSheet("background-color: None")
-            self.spinbox_value.setEnabled(False)
             self.combobox_command.setEnabled(False)
             self.button_send_command.setEnabled(False)
             self.button_servo_open.setEnabled(False)
             self.button_servo_close.setEnabled(False)
-            self.button_engine_run.setEnabled(False)
-            self.button_engine_stop.setEnabled(False)
+            self.button_caliber.setEnabled(False)
 
     def refreshPorts(self):
 

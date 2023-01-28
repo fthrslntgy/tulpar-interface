@@ -2,8 +2,7 @@ UI_FILE = "form.ui"
 NUM_OF_VARS = 24
 TELEMETRY_LEN = 88
 TELEMETRY_PERIOD = 1
-SAT_STATUS_VARS = ("1. Beklemede", "2. Yükselme", "3. Model uydu iniş ", "4. Ayrılma",
-               "5. Görev yükü iniş 6", "6. Askıda kalma", "7. Görev yükü iniş 4", "8. Kurtarma")
+SAT_STATUS_VARS = ("0. Telekomut yok", "1. Görev Yükü Ayrılma", "2. Görev Yükü Kilitlenme", "3. Uçuşa Hazır" ,"4. Model Uydu İniş" ,"5. Ayrılma", "6. Görev Yükü İniş", "7. Kurtarma")
 
 TELEMETRY_FILE_NAME = "/telemetry.csv"
 VIDEO_FILE_NAME = "video.avi"
