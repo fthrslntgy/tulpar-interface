@@ -183,7 +183,7 @@ class Communication:
 
         # update graphs
         self.widget.graphs.update_pl(latitude_pl, longitude_pl)
-        self.widget.graphs.update_car(latitude_car, longitude_car)
+        self.widget.graphs.update_car(pitch, roll, yaw)
         self.widget.graphs.update_sp_tmp_v(abs(speed), tempe, b_voltage)
         self.widget.graphs.update_pressure(pressure_pl, pressure_car)
         self.widget.graphs.update_height(height_pl, height_car)

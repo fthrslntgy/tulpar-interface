@@ -34,10 +34,12 @@ class Graphs:
         car_graph.setXRange(0, cns.GRAPH_X_MAX, padding=cns.GRAPH_PADDING)
         car_graph.vb.setLimits(xMin=0, xMax=cns.GRAPH_X_MAX)
         car_graph.vb.setLimits(yMin=0)
-        self.car_lat_plot = car_graph.plot(pen='y', name="Latitude (m)")
-        self.car_lon_plot = car_graph.plot(pen='r', name="Longitude (m)")
-        self.car_lat_data = np.linspace(0, 0, cns.GRAPH_X_MAX)
-        self.car_lon_data = np.linspace(0, 0, cns.GRAPH_X_MAX)
+        self.pitch_plot = car_graph.plot(pen='y', name="Pitch")
+        self.roll_plot = car_graph.plot(pen='r', name="Roll")
+        self.yaw_plot = car_graph.plot(pen='b', name="Yaw")
+        self.pitch_data = np.linspace(0, 0, cns.GRAPH_X_MAX)
+        self.roll_data = np.linspace(0, 0, cns.GRAPH_X_MAX)
+        self.yaw_data = np.linspace(0, 0, cns.GRAPH_X_MAX)
 
         # Speed, tempature and voltage graph
         sp_tmp_v_view = pg.GraphicsView(self.widget.graph_sp_tmp_v)
@@ -111,16 +113,19 @@ class Graphs:
         self.pl_lat_plot.setData(self.pl_lat_data)
         self.pl_lon_plot.setData(self.pl_lon_data)
 
-    def update_car(self, lat, lon):
+    def update_car(self, pitch, roll, yaw):
 
-        self.car_lat_data[:-1] = self.car_lat_data[1:]
-        self.car_lon_data[:-1] = self.car_lon_data[1:]
-        self.car_lat_data[-1] = lat
-        self.car_lon_data[-1] = lon
+        self.pitch_data[:-1] = self.pitch_data[1:]
+        self.roll_data[:-1] = self.roll_data[1:]
+        self.yaw_data[:-1] = self.yaw_data[1:]
+        self.pitch_data[-1] = pitch
+        self.roll_data[-1] = roll
+        self.yaw_data[-1] = yaw
 
-        self.car_lat_plot.setData(self.car_lat_data)
-        self.car_lon_plot.setData(self.car_lon_data)
-    
+        self.pitch_plot.setData(self.pitch_data)
+        self.roll_plot.setData(self.roll_data)
+        self.yaw_plot.setData(self.yaw_data)
+
     def update_sp_tmp_v(self, sp, tmp, v):
 
         self.sp_data[:-1] = self.sp_data[1:]
