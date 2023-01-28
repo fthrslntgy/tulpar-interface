@@ -4,7 +4,6 @@ from time import sleep
 import struct
 import constants as cns
 import csv
-from weather import Weather
 
 
 class Communication:
@@ -16,7 +15,6 @@ class Communication:
         self.widget = widget
         self.q = False
         self.ser = serial.Serial()
-        self.weather = Weather()
 
     def connect(self):
 
@@ -214,7 +212,3 @@ class Communication:
         self.widget.setHeightDiff(float("{:.2f}".format(height_diff)))
         self.widget.setStatus(status)     
         self.widget.setVideoStatus(video_status)
-
-        # update weather (max temp, min temp, humidity, rain)
-        predict = self.weather.predict(float("{:.2f}".format(tempe)), 0, weather_forecast)
-        self.widget.setWeatherPredict(predict)

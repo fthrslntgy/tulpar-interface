@@ -135,11 +135,6 @@ class Widget(Base, Form):
         self.button_select_video.setStyleSheet("color: black;")
         self.button_send_video.setStyleSheet("background-color: green; color: black;")
 
-        # Weather component
-        self.label_weather_predict.setStyleSheet("background-color: darkred; color: white; font-size: 10px; font-weight: bold;")
-        self.label_weather_predict.setAlignment(Qt.AlignCenter)
-        self.setWeatherPredict([0, 0, 0, 0])
-
         # Logo component
         pixmap_tulpar = QPixmap('images/logo_tulpar.png')
         self.label_logo_tulpar.setPixmap(pixmap_tulpar)
@@ -407,26 +402,6 @@ class Widget(Base, Form):
             self.label_video_status.setText("Aktarım Durumu: Evet")
         else:
             self.label_video_status.setText("Aktarım Durumu: Hayır")
-
-    def setWeatherPredict(self, predict):
-
-        max_temp = predict[0]
-        min_temp = predict[1]
-        humidity = predict[2]
-        rain = int(predict[3])
-        rain_status = ""
-
-        if rain == 0:
-            rain_status = "Yok"
-        elif rain == 1:
-            rain_status = "Az"
-        elif rain == 2:
-            rain_status = "Orta"
-        elif rain == 3:
-            rain_status = "Çok"
-
-        text = "Max Sıcaklık: " + str(max_temp) + "\nMin Sıcaklık: " + str(min_temp) + "\n\nNem Oranı: %" + str(humidity) + "\nYağış Durumu: " + rain_status
-        self.label_weather_predict.setText(text)
 
     def setPRY(self, pitch, roll, yaw):
 

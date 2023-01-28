@@ -494,19 +494,6 @@
     <string>GÖNDER</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_weather">
-   <property name="geometry">
-    <rect>
-     <x>1410</x>
-     <y>0</y>
-     <width>141</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:700; color:#ffffff;&quot;&gt;Hava Durumu Tahmin&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_timer">
    <property name="geometry">
     <rect>
@@ -563,19 +550,6 @@
    </property>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_weather_predict">
-   <property name="geometry">
-    <rect>
-     <x>1420</x>
-     <y>20</y>
-     <width>121</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
    </property>
   </widget>
   <widget class="QPushButton" name="button_camera_pause">
