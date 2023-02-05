@@ -341,13 +341,13 @@ class Widget(Base, Form):
             self.camera_started = False
             self.camera_paused = False
             self.camera_recorded = False
-            self.button_camera_start.setText("START")
+            self.button_camera_start.setText(cns.COMMAND[0])
             self.button_camera_start.setStyleSheet("background-color: green")
             self.button_camera_pause.setEnabled(False)
-            self.button_camera_pause.setText("PAUSE")
+            self.button_camera_pause.setText(cns.COMMAND[3])
             self.button_camera_pause.setStyleSheet("background-color: None")
             self.button_camera_record.setEnabled(False)
-            self.button_camera_record.setText("RECORD")
+            self.button_camera_record.setText(cns.COMMAND[2])
             self.button_camera_record.setStyleSheet("background-color: None")
             self.label_camera_text.setText("REALTIME VIDEO CONNECTION: NOT CONNECTED")
 
@@ -356,13 +356,13 @@ class Widget(Base, Form):
         if not self.camera_paused:
             self.camera_paused = True
             self.CaptureCamera.pause()
-            self.button_camera_pause.setText("UNPAUSE")
+            self.button_camera_pause.setText(cns.COMMAND[4])
             self.button_camera_pause.setStyleSheet("background-color: green")
 
         else:
             self.camera_paused = False
             self.CaptureCamera.unpause()
-            self.button_camera_pause.setText("PAUSE")
+            self.button_camera_pause.setText(cns.COMMAND[3])
             self.button_camera_pause.setStyleSheet("background-color: red")
 
     def cameraRecord(self):
@@ -370,13 +370,13 @@ class Widget(Base, Form):
         if not self.camera_recorded:
             self.camera_recorded = True
             self.CaptureCamera.record()
-            self.button_camera_record.setText("UNRECORD")
+            self.button_camera_record.setText(cns.COMMAND[5])
             self.button_camera_record.setStyleSheet("background-color: red")
 
         else:
             self.camera_recorded = False
             self.CaptureCamera.unrecord()
-            self.button_camera_record.setText("RECORD")
+            self.button_camera_record.setText(cns.COMMAND[2])
             self.button_camera_record.setStyleSheet("background-color: green")
 
     def addRow(self, list):
