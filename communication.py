@@ -148,39 +148,10 @@ class Communication:
 
         takim_no = line[69] + line[70]
         takim_no = int.from_bytes(takim_no, "little", signed=False)
-        takim_no = takim_no * 8
 
         # finish = line[71] + line[72]
 
         # crc = line[73]
-
-
-        """"
-
-        altitude_car = line[57] + line[58] + line[59] + line[60]
-        [altitude_car] = struct.unpack("f", altitude_car)
-        latitude_car = line[61] + line[62] + line[63] + line[64]
-        [latitude_car] = struct.unpack("f", latitude_car)
-        longitude_car = line[65] + line[66] + line[67] + line[68]
-        [longitude_car] = struct.unpack("f", longitude_car)
-
-        """
-
-        """
-        return_number = line[82]
-        return_number = int.from_bytes(return_number, "little", signed=False)
-        video_status = line[83]
-        video_status = int.from_bytes(video_status, "little", signed=False)
-        weather_forecast = line[84]
-        weather_forecast = int.from_bytes(weather_forecast, "little", signed=False)
-
-        
-        # humidity = humidity[85]+lihumidityne[86]+humidity[87]+humidity[88]
-        # [humidity] = struct.unpack("f", humidity)
-        # finish = line[89:91]
-        # crc = line[91]
-
-        """
 
         row = []
         row.append(takim_no)
