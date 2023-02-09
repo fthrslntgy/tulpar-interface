@@ -491,18 +491,3 @@ if __name__ == "__main__":
     widget = Widget()
     widget.show()
     app.exec_()
-
-
-"""
- If your module is the main program,
- then it will see that __name__ was indeed set to "__main__"
- and it exetuces the code in if block
-
- (instead) If your module is not the main program
- but was imported by another one, then __name__ will be "the module name not main",
- not "__main__",and 
- it'll skip the body of the if statement.
-
-
-
-"""
