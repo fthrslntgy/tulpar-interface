@@ -43,6 +43,9 @@ GRAPH_ALTITUDE_TITLE = "Altitude"
 GRAPH_X_MAX = 30
 GRAPH_PADDING = 0
 
+ARAS_ERROR = ("0. !(12 <= Uydu iniş hız <=14)", "1. !(6<= Görev Yükü iniş hızı <=8)", 
+"2. Taşıyıcı basınç verisi alınamaması", "3. Görev Yükü konum verisinin alınamaması", "4. Ayrılmanın gerçekleşmemesi")
+
 TABLE_X = 10
 TABLE_Y = 650
 TABLE_WIDTH = 1631
