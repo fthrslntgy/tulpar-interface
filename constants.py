@@ -1,6 +1,6 @@
 UI_FILE = "form.ui"
 NUM_OF_VARS = 24
-TELEMETRY_LEN = 88
+TELEMETRY_LEN = 74
 TELEMETRY_PERIOD = 1
 SAT_STATUS_VARS = ("0. Telekomut yok", "1. Görev Yükü Ayrılma", "2. Görev Yükü Kilitlenme", "3. Uçuşa Hazır" ,"4. Model Uydu İniş" ,"5. Ayrılma", "6. Görev Yükü İniş", "7. Kurtarma")
 
@@ -42,6 +42,9 @@ GRAPH_HEIGHT_TITLE = "Yükseklik"
 GRAPH_ALTITUDE_TITLE = "Altitude"
 GRAPH_X_MAX = 30
 GRAPH_PADDING = 0
+
+ARAS_ERROR = ("0. !(12 <= Uydu iniş hız <=14)", "1. !(6<= Görev Yükü iniş hızı <=8)", 
+"2. Taşıyıcı basınç verisi alınamaması", "3. Görev Yükü konum verisinin alınamaması", "4. Ayrılmanın gerçekleşmemesi")
 
 TABLE_X = 10
 TABLE_Y = 650
