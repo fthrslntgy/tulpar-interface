@@ -169,16 +169,11 @@ class Communication:
         row.append(latitude_pl)
         row.append(longitude_pl)
         row.append(float("{:.2f}".format(altitude_pl)))
-        row.append(latitude_car)
-        row.append(longitude_car)
-        row.append(float("{:.2f}".format(altitude_car)))
         row.append(status)
         row.append(float("{:.2f}".format(yaw)))
         row.append(float("{:.2f}".format(roll)))
         row.append(float("{:.2f}".format(pitch)))
-        row.append(return_number)
-        row.append(video_status)
-        row.append(weather_forecast)
+      
         # print(row)
         
         # update csv and telemetry table

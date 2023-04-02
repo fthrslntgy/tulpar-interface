@@ -2,7 +2,11 @@ UI_FILE = "form.ui"
 NUM_OF_VARS = 24
 TELEMETRY_LEN = 74
 TELEMETRY_PERIOD = 1
-SAT_STATUS_VARS = ("0. Telekomut yok", "1. Görev Yükü Ayrılma", "2. Görev Yükü Kilitlenme", "3. Uçuşa Hazır" ,"4. Model Uydu İniş" ,"5. Ayrılma", "6. Görev Yükü İniş", "7. Kurtarma")
+
+TELE_COMMANDS = ("0. Telekomut yok", "1. Görev Yükü Ayrılma", "2. Görev Yükü Kilitlenme", "3. Uçuşa Hazır" ,"4. Model Uydu İniş" ,"5. Ayrılma", "6. Görev Yükü İniş", "7. Kurtarma","8.Sensör kalibre etme")
+## old name : SAT_STATUS_VARS
+
+SATELLITE_STATUS =("0. Uçuşa hazır","1. Yükselme","2. Model uydu iniş","3. Ayrılma","4. Görev yükü iniş","5. Kurtarma")
 
 TELEMETRY_FILE_NAME = "/telemetry.csv"
 VIDEO_FILE_NAME = "video.avi"
@@ -54,5 +58,5 @@ TABLE_COLUMN_WIDTH = 150
 TABLE_FONT = "Times New Roman"
 TABLE_FONT_SIZE = 11
 TABLE_TITLE = ("<TAKIM NO>", "<PAKET NUMARASI>", "<GONDERME SAATI>", "<PAYLOAD BASINC>", "<TASIYICI BASINC>", "<PAYLOAD YUKSEKLIK>", "<TASIYICI YUKSEKLIK>", "<YUKSEKLIK FARKI>",
-               "<INIS HIZI>", "<SICAKLIK>", "<PIL GERILIMI>", "<PAYLOAD GPS LATITUDE>", "<PAYLOAD GPS LONGITUDE>", "<PAYLOAD GPS ALTITUDE>", "<TASIYICI GPS LATITUDE>",
-               "<TASIYICI GPS LONGITUDE>", "<TASIYICI GPS ALTITUDE>", "<UYDU STATUSU>", "<YAW>", "<ROLL>", "<PITCH>", "<DONUS SAYISI>", "<VIDEO AKTARIM BILGISI>", "<HAVA DURUMU>")
+               "<INIS HIZI>", "<SICAKLIK>", "<PIL GERILIMI>", "<PAYLOAD GPS LATITUDE>", "<PAYLOAD GPS LONGITUDE>", "<PAYLOAD GPS ALTITUDE>",
+               "<UYDU STATUSU>", "<YAW>", "<ROLL>", "<PITCH>")
